@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ДС ПРОФ — Профессиональное снабжение предприятий</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bd:#050d1a;--bdk:#0a1c36;--bm:#0f2d58;--bb:#1558c0;--ba:#2575f5;--bg:#3d8bff;--bl:#6aaeff;--bp:#dbeaff;--tl:#0094c6;--tll:#00b8e8;--wh:#fff;--ws:#f2f7ff;--gl:#e4edf8;--gm:#8aa3c2;--td:#0a1628;--tm:#4a6080}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Inter',sans-serif;background:#fff;color:var(--td);overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(-38px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(38px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scIn{from{opacity:0;transform:scale(.87)}to{opacity:1;transform:scale(1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+@keyframes glowP{0%,100%{box-shadow:0 0 20px rgba(37,117,245,.3),0 6px 28px rgba(37,117,245,.2)}50%{box-shadow:0 0 44px rgba(37,117,245,.65),0 8px 40px rgba(37,117,245,.45)}}
+@keyframes pFloat{0%{transform:translateY(0) translateX(0);opacity:0}20%{opacity:.7}80%{opacity:.5}100%{transform:translateY(-110px) translateX(var(--tx));opacity:0}}
+@keyframes logoGlow{0%,100%{filter:drop-shadow(0 4px 14px rgba(37,117,245,.45))}50%{filter:drop-shadow(0 4px 28px rgba(37,117,245,.8))}}
+@keyframes shimmerMove{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(5,13,26,.96);backdrop-filter:blur(16px);border-bottom:1px solid rgba(37,117,245,.18);height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;transition:all .4s}
+header.sc{height:64px;background:rgba(5,13,26,.99)}
+.logo{display:flex;align-items:center;gap:13px;text-decoration:none;flex-shrink:0}
+.logo-mark{position:relative;width:46px;height:46px;flex-shrink:0;animation:logoGlow 3s ease-in-out infinite;transition:transform .3s;display:flex!important;align-items:center!important;justify-content:center!important}
+.logo:hover .logo-mark{transform:scale(1.07) rotate(-3deg)}
+.logo-mark svg,.logo-mark img{display:block!important;flex-shrink:0}
+.logo-info{display:flex;flex-direction:column;line-height:1;gap:3px}
+.logo-name{font-family:'Montserrat',sans-serif;font-weight:900;font-size:19px;color:#fff;letter-spacing:2.5px;white-space:nowrap}
+.logo-tag{font-family:'Inter',sans-serif;font-size:9.5px;font-weight:500;color:rgba(106,174,255,.72);letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+nav{display:flex;gap:28px;align-items:center}
+nav a{color:rgba(255,255,255,.62);text-decoration:none;font-size:12.5px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;transition:color .2s;position:relative}
+nav a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--ba),var(--tl));transform:scaleX(0);transform-origin:left;transition:transform .25s}
+nav a:hover{color:#fff}nav a:hover::after{transform:scaleX(1)}
+.btn-nav{background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border:none;padding:10px 22px;border-radius:7px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:.3px;transition:all .3s;white-space:nowrap;box-shadow:0 4px 18px rgba(21,88,192,.4)}
+.btn-nav:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(21,88,192,.6)}
+
+#hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;padding:100px 40px 60px}
+.hero-photo{position:absolute;inset:0;background-image:url('img/hero.webp');background-size:cover;background-position:center 0%;background-repeat:no-repeat}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,13,26,.88) 0%,rgba(5,13,26,.72) 42%,rgba(5,13,26,.25) 70%,rgba(5,13,26,.08) 100%),linear-gradient(180deg,rgba(5,13,26,.15) 0%,transparent 35%,rgba(4,12,27,.5) 85%,rgba(4,12,27,.9) 100%)}
+.hero-scan{display:none}
+.h-grid{position:absolute;inset:0;pointer-events:none;z-index:1;background-image:linear-gradient(rgba(37,117,245,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(37,117,245,.06) 1px,transparent 1px);background-size:68px 68px;mask-image:linear-gradient(90deg,black 0%,black 50%,transparent 80%)}
+.hero-wave{position:absolute;bottom:0;left:0;right:0;z-index:3;height:160px;pointer-events:none;background:linear-gradient(to bottom,transparent 0%,rgba(4,12,27,.3) 40%,rgba(4,12,27,.82) 75%,#040c1b 100%)}
+.h-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:1}
+.h-orb1{width:500px;height:500px;left:-8%;top:-15%;background:radial-gradient(circle,rgba(37,117,245,.18),transparent 70%)}
+.ptcls{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2}
+.pt{position:absolute;border-radius:50%;background:var(--ba);opacity:0;animation:pFloat 7s infinite}
+.hero-wrap{max-width:1260px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative;z-index:4}
+.hl{animation:fadeLeft .9s ease both}
+.h-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(37,117,245,.15);border:1px solid rgba(37,117,245,.3);border-radius:40px;padding:7px 18px;color:var(--bl);font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:26px;animation:fadeUp .7s .2s both;backdrop-filter:blur(8px)}
+.h-dot{width:7px;height:7px;border-radius:50%;background:var(--ba);animation:pulse 2s infinite}
+.h-title{font-family:'Montserrat',sans-serif;font-weight:900;font-size:clamp(2.2rem,4vw,3.9rem);color:#fff;line-height:1.07;margin-bottom:20px;animation:fadeUp .8s .3s both;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+.h-title .ac{background:linear-gradient(130deg,#5aabff,var(--tll));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-title .lt{font-weight:300;color:rgba(255,255,255,.65)}
+.h-desc{color:rgba(255,255,255,.7);font-size:15.5px;line-height:1.85;margin-bottom:40px;max-width:480px;animation:fadeUp .8s .4s both;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.h-ctas{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp .8s .5s both}
+.btn-p{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border:none;padding:15px 34px;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.3px;text-decoration:none;transition:all .35s;box-shadow:0 8px 30px rgba(21,88,192,.55);animation:glowP 3s infinite}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(21,88,192,.7)}
+.btn-p svg,.btn-o svg{transition:transform .2s}.btn-p:hover svg,.btn-o:hover svg{transform:translateX(4px)}
+.btn-o{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);border:1.5px solid rgba(255,255,255,.25);padding:15px 30px;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;cursor:pointer;letter-spacing:.3px;text-decoration:none;transition:all .3s;backdrop-filter:blur(8px)}
+.btn-o:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.5)}
+.h-stats{display:flex;margin-top:48px;padding-top:36px;border-top:1px solid rgba(255,255,255,.12);animation:fadeUp .8s .6s both}
+.hs{flex:1;padding:0 28px 0 0;position:relative}.hs:not(:last-child)::after{content:'';position:absolute;right:0;top:0;bottom:0;width:1px;background:rgba(255,255,255,.1)}.hs:not(:first-child){padding-left:28px}
+.hs-n{font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.3rem;color:#fff;line-height:1;text-shadow:0 0 20px rgba(37,117,245,.5)}.hs-n span{color:var(--ba)}
+.hs-l{font-size:11.5px;color:rgba(255,255,255,.55);margin-top:5px}
+.hr-side{position:relative;animation:fadeRight 1s .3s both;display:flex;align-items:center;justify-content:center}
+.vis-card{background:rgba(5,13,26,.72);border:1px solid rgba(37,117,245,.25);border-radius:20px;padding:28px;backdrop-filter:blur(24px);box-shadow:0 24px 64px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);position:relative;z-index:2;width:100%;max-width:380px; overflow: hidden; }
+.vis-card::before{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(37,117,245,.25),transparent 50%,rgba(0,148,198,.15));z-index:-1;pointer-events:none}
+.vis-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;border-radius:21px 21px 0 0;background:linear-gradient(90deg,transparent,rgba(37,117,245,.8),rgba(0,184,232,.6),transparent);background-size:200% 100%;animation:shimmerMove 3s linear infinite}
+.vc-hd{display:flex;align-items:center;gap:13px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.07)}
+.vc-ic{width:48px;height:48px;border-radius:13px;flex-shrink:0;background:linear-gradient(135deg,rgba(37,117,245,.22),rgba(0,148,198,.18));border:1px solid rgba(37,117,245,.3);display:flex;align-items:center;justify-content:center}
+.vc-t{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:#fff}.vc-s{font-size:11.5px;color:var(--gm);margin-top:2px}
+.vc-items{display:flex;flex-direction:column;gap:9px}
+.vci{display:flex;align-items:center;gap:13px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:12px 14px;transition:all .3s}
+.vci:hover{background:rgba(37,117,245,.1);border-color:rgba(37,117,245,.25);transform:translateX(4px)}
+.vci-ic{width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.vci-t{font-size:13px;color:rgba(255,255,255,.82);font-weight:500}.vci-s{font-size:11px;color:var(--gm);margin-top:2px}
+.fb{position:absolute;background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border-radius:11px;padding:9px 15px;font-size:12px;font-weight:700;box-shadow:0 7px 28px rgba(21,88,192,.55);display:flex;align-items:center;gap:7px;white-space:nowrap;backdrop-filter:blur(8px)}
+.fb1{bottom:-18px;left:-20px;animation:float 3.5s ease-in-out infinite}.fb2{top:-16px;right:-12px;animation:float 3s ease-in-out .8s infinite}
+
+#dolphin{background:linear-gradient(90deg,#040c1b,#07183a,#040c1b);border-top:1px solid rgba(37,117,245,.14);border-bottom:1px solid rgba(37,117,245,.14);padding:52px 40px;position:relative;overflow:hidden}
+#dolphin::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(37,117,245,.055),transparent 68%)}
+.dol-wrap{max-width:1260px;margin:0 auto;display:flex;align-items:center;gap:52px;flex-wrap:wrap;position:relative;z-index:1}
+.dol-logo{flex-shrink:0;width:154px;height:154px;border-radius:22px;background:linear-gradient(145deg,rgba(0,148,198,.14),rgba(37,117,245,.09));border:1.5px solid rgba(0,148,198,.28);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-shadow:0 0 38px rgba(0,148,198,.13),inset 0 1px 0 rgba(255,255,255,.04);transition:transform .3s}
+.dol-logo:hover{transform:scale(1.04)}
+.dol-txt{flex:1}.dol-eye{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gm);margin-bottom:7px}
+.dol-brand{font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.5rem;background:linear-gradient(135deg,var(--tll),var(--bg));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:4px;line-height:1;margin-bottom:13px}
+.dol-desc{color:rgba(255,255,255,.48);font-size:14.5px;line-height:1.82;max-width:460px}
+.dol-badges{display:flex;flex-direction:column;gap:11px;margin-left:auto}
+.db{background:rgba(37,117,245,.08);border:1px solid rgba(37,117,245,.18);border-radius:12px;padding:15px 22px;text-align:center;min-width:150px}
+.db-n{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.55rem;color:#fff;line-height:1}.db-l{font-size:10px;color:var(--gm);margin-top:4px;letter-spacing:1.5px;text-transform:uppercase}
+
+section{padding:92px 40px}.si{max-width:1260px;margin:0 auto}.sh{text-align:center;margin-bottom:60px}
+.se{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--ba);font-weight:600;margin-bottom:13px}
+.st{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(1.75rem,3vw,2.7rem);color:var(--td);line-height:1.15}.st .ac{color:var(--bb)}
+.ss{color:var(--tm);font-size:15px;line-height:1.78;margin-top:13px;max-width:510px;margin-left:auto;margin-right:auto}
+.sd{width:54px;height:3px;border-radius:2px;margin:20px auto 0;background:linear-gradient(90deg,var(--bb),var(--tl))}
+.fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.fu.v{opacity:1;transform:none}
+.fl{opacity:0;transform:translateX(-20px);transition:opacity .6s ease,transform .6s ease}.fl.v{opacity:1;transform:none}
+.fr{opacity:0;transform:translateX(20px);transition:opacity .6s ease,transform .6s ease}.fr.v{opacity:1;transform:none}
+.fs{opacity:0;transform:scale(.97);transition:opacity .6s ease,transform .6s ease}.fs.v{opacity:1;transform:none}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+#about{background:var(--ws)}
+.ab-g{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center}
+.ab-t{color:var(--tm);font-size:15px;line-height:1.92}
+.ab-t h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:2.15rem;color:var(--td);line-height:1.2;margin-bottom:17px}.ab-t h2 span{color:var(--bb)}
+.ab-t p{margin-bottom:14px}
+.ab-feats{display:flex;flex-direction:column;gap:13px;margin-top:26px}
+.af{display:flex;align-items:center;gap:15px;background:#fff;border:1px solid var(--gl);border-radius:12px;padding:16px 19px;box-shadow:0 2px 14px rgba(21,88,192,.05);transition:all .3s}
+.af:hover{border-color:rgba(21,88,192,.24);transform:translateX(5px);box-shadow:0 6px 22px rgba(21,88,192,.1)}
+.af-ic{width:42px;height:42px;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,#dbeaff,#c0d8ff);display:flex;align-items:center;justify-content:center}.af-ic svg{width:22px;height:22px}
+.af-tx h4{font-weight:700;font-size:13.5px;color:var(--td);margin-bottom:2px}.af-tx p{font-size:12.5px;color:var(--tm)}
+.ab-sg{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.as{background:#fff;border:1px solid var(--gl);border-radius:16px;padding:26px 22px;text-align:center;box-shadow:0 4px 18px rgba(21,88,192,.05);transition:transform .3s,box-shadow .3s}
+.as:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(21,88,192,.12)}
+.as.f{background:linear-gradient(135deg,var(--bb),var(--tl));border-color:transparent;grid-column:span 2}
+.as-n{font-family:'Montserrat',sans-serif;font-weight:900;font-size:2.7rem;color:var(--bb);line-height:1}.as.f .as-n{color:#fff;font-size:3.2rem}
+.as-l{font-size:13px;color:var(--tm);margin-top:5px}.as.f .as-l{color:rgba(255,255,255,.7)}
+
+#products{background:#fff}
+.p-tabs{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:50px}
+.tab-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:30px;border:1.5px solid rgba(37,117,245,.25);background:rgba(255,255,255,.04);color:var(--tm);font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.3px}
+.tab-btn:hover{border-color:var(--ba);color:var(--ba);background:rgba(37,117,245,.06)}
+.tab-btn.active{background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border-color:transparent;box-shadow:0 4px 16px rgba(37,117,245,.35)}
+.ma-hdr{background:linear-gradient(135deg,#fff8e1,#ffe082)}.gr-hdr{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.cat-indicator{display:inline-flex;align-items:center;gap:7px;padding:6px 14px 6px 10px;border-radius:20px;background:rgba(37,117,245,.08);border:1px solid rgba(37,117,245,.18);font-size:12px;font-weight:600;color:var(--ba);margin-bottom:18px}
+.cat-indicator-dot{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,var(--ba),var(--tl));flex-shrink:0}
+.pg-subgroup-hdr{grid-column:1/-1;margin:28px 0 10px;padding-bottom:10px;border-bottom:2px solid rgba(37,117,245,.12)}
+.pg-subgroup-hdr h4{font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:var(--td);margin-bottom:4px}.pg-subgroup-hdr p{font-size:12.5px;color:var(--tm)}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pc{border:1px solid var(--gl);border-radius:18px;overflow:hidden;background:#fff;transition:all .35s;cursor:pointer;box-shadow:0 2px 15px rgba(21,88,192,.05)}
+.pc:hover{transform:translateY(-8px);box-shadow:0 24px 50px rgba(21,88,192,.15);border-color:rgba(21,88,192,.2)}
+.pc-tp{height:148px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pc-tp img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s ease;display:block}
+.pc:hover .pc-tp img{transform:scale(1.08)}
+.pc-tp.ch{background:linear-gradient(135deg,#e7efff,#d0e2ff)}.pc-tp.la{background:linear-gradient(135deg,#ede8ff,#ded0ff)}.pc-tp.ki{background:linear-gradient(135deg,#e4fff0,#c4f0d8)}.pc-tp.hy{background:linear-gradient(135deg,#e0f5ff,#bbebff)}.pc-tp.pa{background:linear-gradient(135deg,#e4ffe6,#c5f0c8)}.pc-tp.si{background:linear-gradient(135deg,#fff4de,#ffe2ad)}
+.pc-bd{padding:21px}.pc-ca{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ba);font-weight:700;margin-bottom:6px}
+.pc-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14.5px;color:var(--td);margin-bottom:11px}
+.pc-ls{display:flex;flex-direction:column;gap:5px}.pc-li{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--tm)}
+.pc-ft{padding:13px 21px;border-top:1px solid var(--gl);display:flex;justify-content:space-between;align-items:center}
+.pc-tg{font-size:11px;background:var(--bp);color:var(--bb);border-radius:5px;padding:3px 9px;font-weight:700}
+.pc-bt{background:none;border:1.5px solid var(--bb);color:var(--bb);padding:7px 17px;border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.pc-bt:hover{background:var(--bb);color:#fff}
+
+#clients{background:var(--ws)}
+.cl-g{display:grid;grid-template-columns:repeat(4,1fr);gap:19px}
+.cl{background:#fff;border:1px solid var(--gl);border-radius:16px;padding:30px 20px;text-align:center;transition:all .35s;box-shadow:0 2px 11px rgba(21,88,192,.05)}
+.cl:hover{transform:translateY(-6px);box-shadow:0 16px 36px rgba(21,88,192,.12);border-color:rgba(21,88,192,.2)}
+.cl-ic{width:68px;height:68px;border-radius:18px;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bp),#c2d8ff)}.cl-ic svg{width:36px;height:36px}
+.cl-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--td);margin-bottom:6px}.cl-ds{font-size:12.5px;color:var(--tm);line-height:1.6}
+
+#order{background:radial-gradient(ellipse at 72% 0%,#0c2a52 0%,transparent 52%),linear-gradient(172deg,var(--bd),#07193a 58%,#040d1c 100%);position:relative;overflow:hidden}
+#order::after{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(37,117,245,.038) 1px,transparent 1px),linear-gradient(90deg,rgba(37,117,245,.038) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at 70% 50%,black 30%,transparent 68%)}
+.or-in{max-width:840px;margin:0 auto;position:relative;z-index:1}
+.or-hd{text-align:center;margin-bottom:44px}.or-hd h2{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(1.75rem,3vw,2.45rem);color:#fff;margin-bottom:11px}.or-hd p{color:rgba(255,255,255,.48);font-size:15px}
+.or-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:46px;backdrop-filter:blur(20px);box-shadow:0 28px 76px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.04)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fi{display:flex;flex-direction:column;gap:6px}.fi.full{grid-column:span 2}
+.fi label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.38)}
+.fi input,.fi select,.fi textarea{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:13px 17px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;outline:none;width:100%;transition:border-color .2s,background .2s}
+.fi input::placeholder,.fi textarea::placeholder{color:rgba(255,255,255,.22)}
+.fi input:focus,.fi select:focus,.fi textarea:focus{border-color:rgba(37,117,245,.5);background:rgba(37,117,245,.07)}
+.fi select option{background:#0a1c36;color:#fff}.fi textarea{resize:vertical;min-height:88px}
+.chk-g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:3px}
+.chi{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .2s}
+.chi:hover{border-color:rgba(37,117,245,.34);background:rgba(37,117,245,.07)}
+.chi input[type=checkbox]{width:15px;height:15px;margin:0;padding:0;accent-color:var(--ba);flex-shrink:0}
+.chi span{font-size:12px;color:rgba(255,255,255,.62)}
+.btn-sub{width:100%;margin-top:26px;background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border:none;padding:17px;border-radius:11px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:1px;text-transform:uppercase;transition:all .35s;box-shadow:0 8px 30px rgba(21,88,192,.5);display:flex;align-items:center;justify-content:center;gap:9px}
+.btn-sub:hover{transform:translateY(-2px);box-shadow:0 16px 44px rgba(21,88,192,.65)}
+.btn-sub svg{transition:transform .2s}.btn-sub:hover svg{transform:translateX(4px)}
+.fn{text-align:center;margin-top:11px;font-size:12px;color:rgba(255,255,255,.22)}
+.sb{display:none;text-align:center;padding:50px 20px}.sb.show{display:block;animation:scIn .4s ease}
+.sb-iw{width:78px;height:78px;border-radius:50%;margin:0 auto 22px;background:linear-gradient(135deg,var(--bb),var(--tl));display:flex;align-items:center;justify-content:center;box-shadow:0 0 38px rgba(37,117,245,.4)}
+.sb h3{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.65rem;color:#fff;margin-bottom:9px}.sb p{color:rgba(255,255,255,.48);font-size:15px}
+
+#contacts{background:#fff}
+.ct-g{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+.ct-c{display:flex;gap:17px;align-items:flex-start;padding:21px;border-radius:13px;border:1px solid var(--gl);transition:all .3s;margin-bottom:13px}
+.ct-c:hover{border-color:rgba(21,88,192,.2);box-shadow:0 7px 22px rgba(21,88,192,.08);transform:translateX(4px)}
+.ct-ci{width:46px;height:46px;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,var(--bp),#c2d8ff);display:flex;align-items:center;justify-content:center}.ct-ci svg{width:21px;height:21px}
+.ct-i h4{font-weight:700;font-size:13.5px;color:var(--td);margin-bottom:4px}.ct-i p,.ct-i a{font-size:14px;color:var(--tm);text-decoration:none;display:block;line-height:1.7}.ct-i a:hover{color:var(--bb)}
+.mp{height:270px;border-radius:17px;background:linear-gradient(135deg,var(--bp),#c2d8ff);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:11px;border:1px solid rgba(21,88,192,.12);margin-bottom:18px}
+.mp svg{width:44px;height:44px;opacity:.48}.mp p{font-size:14px;color:var(--tm)}
+.rq{background:var(--ws);border:1px solid var(--gl);border-radius:13px;padding:21px;font-size:13px;color:var(--tm);line-height:1.9}.rq strong{font-weight:700;font-size:14px;color:var(--td);display:block;margin-bottom:8px}
+
+footer{background:var(--bd);padding:50px 40px 26px;border-top:1px solid rgba(37,117,245,.14)}
+.ft-in{max-width:1260px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:42px}
+.ft-ds{color:rgba(255,255,255,.32);font-size:13px;line-height:1.85;margin-top:13px;max-width:225px}
+.ft-col h5{font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}.ft-col ul li a{color:rgba(255,255,255,.38);font-size:13px;text-decoration:none;transition:color .2s}.ft-col ul li a:hover{color:#fff}
+.ft-bt{max-width:1260px;margin:36px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:9px}.ft-bt p{font-size:12px;color:rgba(255,255,255,.24)}
+
+.mb{display:none;position:fixed;inset:0;z-index:2000;background:rgba(5,13,26,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px}
+.mb.open{display:flex;animation:fadeUp .3s ease}.mx{background:#fff;border-radius:22px;padding:40px;max-width:420px;width:100%;box-shadow:0 38px 96px rgba(0,0,0,.35);animation:scIn .3s ease}
+.mx h3{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.35rem;color:var(--td);margin-bottom:5px}
+.mx .ms{color:var(--tm);font-size:14px;margin-bottom:22px}.mx .mp2{font-weight:700;color:var(--bb)}
+.mx input,.mx textarea{background:var(--ws);border:1.5px solid var(--gl);border-radius:10px;padding:13px 16px;color:var(--td);font-family:'Inter',sans-serif;font-size:14px;outline:none;width:100%;margin-bottom:12px;transition:border-color .2s}
+.mx input:focus,.mx textarea:focus{border-color:var(--bb)}
+.ma{display:flex;gap:11px;margin-top:4px}
+.mc{flex:1;padding:13px;border-radius:9px;border:1.5px solid var(--gl);background:none;color:var(--tm);cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;transition:all .2s}.mc:hover{border-color:var(--gm)}
+.mo{flex:2;padding:13px;border-radius:9px;background:linear-gradient(135deg,var(--bb),var(--tl));border:none;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;transition:all .3s}.mo:hover{box-shadow:0 8px 24px rgba(21,88,192,.4)}
+
+.burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:5px;flex-shrink:0}
+.burger span{display:block;height:2px;width:100%;border-radius:2px;background:rgba(255,255,255,.88);transition:all .3s;transform-origin:center}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger.open span:nth-child(2){opacity:0;transform:scaleX(0)}.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mob-nav{display:none;position:fixed;top:64px;left:0;right:0;z-index:999;background:rgba(5,13,26,.98);backdrop-filter:blur(20px);border-bottom:1px solid rgba(37,117,245,.2);flex-direction:column;padding:16px 20px 24px;gap:0}
+.mob-nav.open{display:flex;animation:fadeUp .25s ease}
+.mob-nav a{color:rgba(255,255,255,.75);text-decoration:none;font-size:15px;font-weight:500;padding:14px 8px;border-bottom:1px solid rgba(255,255,255,.06);transition:color .2s;display:block}
+.mob-nav a:last-of-type{border-bottom:none}.mob-nav a:hover{color:#fff}
+.btn-mob-order{margin-top:16px;width:100%;padding:14px;border-radius:10px;background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.5px;box-shadow:0 6px 20px rgba(21,88,192,.45)}
+
+.cat-view{display:block}.cat-view.hidden{display:none!important}.prod-view{display:none}.prod-view.active{display:block;animation:fadeUp .35s ease both}
+.back-btn{display:inline-flex;align-items:center;gap:9px;background:var(--ws);border:1.5px solid var(--gl);color:var(--td);padding:10px 22px;border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:30px;transition:all .2s}.back-btn:hover{border-color:var(--bb);color:var(--bb)}
+.prod-cat-header{margin-bottom:28px}.prod-cat-header h3{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.8rem;color:var(--td);margin-bottom:6px}.prod-cat-header h3 span{color:var(--bb)}.prod-cat-header p{font-size:14.5px;color:var(--tm)}
+.subcat-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1.05rem;color:var(--td);margin:34px 0 16px;padding:11px 18px;background:var(--ws);border-left:4px solid var(--ba);border-radius:0 10px 10px 0;display:flex;align-items:center;gap:10px}.subcat-title:first-child{margin-top:0}
+.pg-det{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pdc{border:1px solid var(--gl);border-radius:18px;overflow:hidden;background:#fff;transition:all .35s;box-shadow:0 2px 15px rgba(21,88,192,.05);display:flex;flex-direction:column}
+.pdc:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(21,88,192,.12);border-color:rgba(21,88,192,.18)}
+.pdc-tp{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.pdc-tp.ch{background:linear-gradient(135deg,#e7efff,#d0e2ff)}.pdc-tp.la{background:linear-gradient(135deg,#ede8ff,#ded0ff)}.pdc-tp.ki{background:linear-gradient(135deg,#e4fff0,#c4f0d8)}.pdc-tp.hy{background:linear-gradient(135deg,#e0f5ff,#bbebff)}.pdc-tp.sa{background:linear-gradient(135deg,#fff0e6,#ffe0c4)}.pdc-tp.de{background:linear-gradient(135deg,#ffe6e6,#ffd0d0)}.pdc-tp.gr{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.pdc-brand{font-family:'Montserrat',sans-serif;font-weight:800;font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.52}
+.pdc-art{font-size:10px;font-weight:600;opacity:.4}
+.pdc-bd{padding:16px 17px;flex:1;display:flex;flex-direction:column}
+.pdc-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--td);margin-bottom:3px}
+.pdc-sub{font-size:11.5px;color:var(--ba);font-weight:600;margin-bottom:8px}
+.pdc-desc{font-size:12.5px;color:var(--tm);line-height:1.6;margin-bottom:10px;flex:1}
+.pdc-use{background:var(--ws);border-radius:8px;padding:9px 11px;font-size:11.5px;color:var(--tm);line-height:1.55}.pdc-use strong{display:block;font-size:10px;font-weight:700;color:var(--td);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.pdc-ft{padding:11px 17px;border-top:1px solid var(--gl);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-shrink:0}
+.pdc-tg{font-size:10.5px;background:var(--bp);color:var(--bb);border-radius:5px;padding:3px 8px;font-weight:700;flex-shrink:0}
+.pdc-btns{display:flex;gap:7px;align-items:center}
+.pdc-cart{width:32px;height:32px;border-radius:7px;background:linear-gradient(135deg,var(--bb),var(--tl));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;box-shadow:0 3px 10px rgba(21,88,192,.3)}
+.pdc-cart:hover{transform:scale(1.1);box-shadow:0 5px 16px rgba(21,88,192,.45)}
+.pdc-cart svg{pointer-events:none}
+.pdc-qty{display:flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;box-shadow:0 3px 10px rgba(21,88,192,.3);flex-shrink:0}
+.pdc-qb{width:28px;height:32px;background:linear-gradient(135deg,var(--bb),var(--tl));border:none;color:#fff;font-size:18px;font-weight:300;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;line-height:1}.pdc-qb:hover{background:var(--ba)}
+.pdc-qv{min-width:28px;height:32px;background:linear-gradient(135deg,#1c66d4,#007fb0);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+.cart-fab{position:fixed;bottom:32px;right:32px;z-index:1500;background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border:none;border-radius:50px;padding:14px 22px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:none;align-items:center;gap:10px;box-shadow:0 8px 30px rgba(21,88,192,.5);transition:all .3s;animation:fadeUp .4s ease}
+.cart-fab.show{display:flex}.cart-fab:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(21,88,192,.65)}
+.cart-badge{background:#fff;color:var(--bb);border-radius:50px;font-size:12px;font-weight:800;padding:2px 9px;min-width:22px;text-align:center}
+.cart-panel{position:fixed;top:0;right:-420px;width:400px;max-width:100vw;height:100%;z-index:2100;background:#fff;box-shadow:-8px 0 40px rgba(0,0,0,.18);display:flex;flex-direction:column;transition:right .35s cubic-bezier(.4,0,.2,1)}.cart-panel.open{right:0}
+.cart-overlay{position:fixed;inset:0;z-index:2050;background:rgba(5,13,26,.5);backdrop-filter:blur(3px);display:none}.cart-overlay.show{display:block}
+.cart-hd{padding:22px 24px 18px;border-bottom:1px solid var(--gl);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.cart-hd h3{font-family:'Montserrat',sans-serif;font-weight:800;font-size:1.2rem;color:var(--td)}.cart-hd-cnt{font-size:12px;color:var(--tm);margin-top:2px}
+.cart-close{width:34px;height:34px;border:1.5px solid var(--gl);border-radius:8px;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}.cart-close:hover{border-color:var(--bb);color:var(--bb)}
+.cart-items{flex:1;overflow-y:auto;padding:16px 24px}
+.cart-empty{text-align:center;padding:48px 0;color:var(--tm);font-size:14px}.cart-empty svg{display:block;margin:0 auto 14px;opacity:.3}
+.ci{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--gl)}.ci:last-child{border-bottom:none}
+.ci-dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--bb),var(--tl));flex-shrink:0;margin-top:5px}
+.ci-info{flex:1}.ci-nm{font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;color:var(--td);margin-bottom:2px}.ci-sub{font-size:11.5px;color:var(--tm)}
+.ci-qty{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.ci-qb{width:22px;height:22px;border-radius:5px;border:1.5px solid var(--gl);background:#f5f8ff;color:var(--td);font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}.ci-qb:hover{background:var(--bp)}
+.ci-qv{min-width:20px;text-align:center;font-weight:700;font-size:13px;color:var(--td)}
+.ci-rm{background:none;border:none;color:var(--gm);cursor:pointer;font-size:18px;line-height:1;padding:2px 6px;border-radius:5px;transition:all .2s;flex-shrink:0}.ci-rm:hover{background:#ffe6e6;color:#c03030}
+.cart-footer{padding:20px 24px;border-top:1px solid var(--gl);flex-shrink:0;background:#fff}
+.cart-checkout{width:100%;background:linear-gradient(135deg,var(--bb),var(--tl));color:#fff;border:none;padding:15px;border-radius:11px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 6px 22px rgba(21,88,192,.4)}.cart-checkout:hover{box-shadow:0 10px 30px rgba(21,88,192,.6);transform:translateY(-1px)}
+.cart-clear{width:100%;margin-top:9px;background:none;border:1.5px solid var(--gl);color:var(--tm);padding:10px;border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}.cart-clear:hover{border-color:#c03030;color:#c03030}
+.or-cart-block{background:rgba(37,117,245,.06);border:1.5px solid rgba(37,117,245,.18);border-radius:13px;padding:16px 18px;margin-bottom:18px}
+.or-cart-block h4{font-family:'Montserrat',sans-serif;font-weight:700;font-size:13px;color:#4A6080;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.or-cart-item{font-size:12.5px;color:var(--tm);padding:4px 0;border-bottom:1px solid rgba(37,117,245,.08);display:flex;align-items:center;gap:8px}.or-cart-item:last-child{border-bottom:none}
+.or-cart-item::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--ba);flex-shrink:0}
+.or-cart-item-name{flex:1;font-weight:500}
+.or-cart-qty{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.or-qty-btn{width:24px;height:24px;border-radius:6px;border:1.5px solid rgba(37,117,245,.25);background:rgba(37,117,245,.05);color:var(--bb);font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}.or-qty-btn:hover{background:rgba(37,117,245,.15)}
+.or-qty-val{min-width:22px;text-align:center;font-weight:700;font-size:13px;color:#4A6080}
+.or-cart-empty{font-size:12.5px;color:var(--gm);font-style:italic}
+
+@media(max-width:1024px){header{padding:0 24px}.hero-wrap{gap:30px}.fb1,.fb2{display:none}.ft-in{grid-template-columns:1.5fr 1fr 1fr;gap:32px}.ft-in>div:first-child{grid-column:span 3}}
+@media(max-width:860px){header{padding:0 16px;height:64px}header.sc{height:56px}nav{display:none}.hd-btn-desk{display:none}.burger{display:flex}.logo-name{font-size:16px;letter-spacing:1.5px}.logo-tag{font-size:8.5px;letter-spacing:1.5px}.logo-mark{width:38px;height:38px}#hero{padding:80px 16px 110px;min-height:100svh;display:flex;align-items:flex-start}.hero-wrap{grid-template-columns:1fr;gap:24px;align-items:flex-start;padding-top:12px}.hl{order:1}.h-title{font-size:clamp(1.85rem,8.5vw,2.7rem);margin-bottom:14px}.h-desc{font-size:13.5px;line-height:1.75;margin-bottom:22px;max-width:100%}.h-badge{font-size:10.5px;padding:6px 13px;margin-bottom:16px;letter-spacing:1px}.h-ctas{flex-direction:column;gap:10px;width:100%}.btn-p,.btn-o{width:100%;justify-content:center;padding:14px 20px;font-size:14px;box-sizing:border-box}.h-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:28px;padding-top:22px;gap:0}.hs{padding:0 10px;border-right:1px solid rgba(255,255,255,.08);text-align:center}.hs:last-child{border-right:none}.hs::after{display:none!important}.hs-n{font-size:1.5rem}.hs-l{font-size:10px}.hr-side{order:2;display:flex;align-items:center;justify-content:center;width:100%}.vis-card{max-width:100%;padding:16px;border-radius:14px}.vc-hd{display:none}.vc-items{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.vci{flex-direction:column;align-items:center;text-align:center;padding:12px 8px;gap:8px;border-radius:10px}.vci-ic{width:40px;height:40px;flex-shrink:0}.vci-t{font-size:11px;font-weight:600;line-height:1.3}.vci-s{display:none}.fb1,.fb2{display:none}.hero-wave{height:110px}#dolphin{padding:36px 16px}.dol-wrap{gap:24px;flex-direction:column;align-items:flex-start}.dol-logo{width:100px;height:100px;border-radius:16px}.dol-logo svg{width:38px;height:38px}.dol-brand{font-size:1.8rem;letter-spacing:2px}.dol-desc{font-size:13.5px}.dol-badges{display:none}section{padding:60px 16px}.sh{margin-bottom:38px}.st{font-size:clamp(1.5rem,5vw,2.1rem)}.ss{font-size:14px}.sd{margin-top:16px}.ab-g{grid-template-columns:1fr;gap:32px}.ab-t h2{font-size:1.7rem}.ab-t p{font-size:14.5px}.af{padding:14px 16px}.af-ic{width:38px;height:38px;flex-shrink:0}.ab-sg{grid-template-columns:1fr 1fr;gap:12px}.as{padding:22px 16px}.as-n{font-size:2.2rem}.as.f .as-n{font-size:2.7rem}.p-tabs{gap:7px;flex-wrap:wrap;justify-content:center}.tab-btn{padding:8px 16px;font-size:12px}.pg{grid-template-columns:repeat(2,1fr);gap:14px}.pc-tp{height:120px}.pc-bd{padding:15px}.pc-ca{font-size:9px}.pc-nm{font-size:13px;margin-bottom:8px}.pc-li{font-size:12px}.pc-ft{padding:11px 15px;flex-wrap:wrap;gap:8px}.pc-tg{font-size:10.5px}.pc-bt{padding:7px 14px;font-size:11.5px}.cl-g{grid-template-columns:repeat(2,1fr);gap:14px}.cl{padding:22px 16px}.cl-ic{width:56px;height:56px;border-radius:14px}.cl-nm{font-size:13px}.cl-ds{font-size:12px}.or-card{padding:22px 16px;border-radius:16px}.or-hd h2{font-size:1.5rem}.or-hd p{font-size:14px}.fg{grid-template-columns:1fr;gap:14px}.fi.full{grid-column:span 1}.fi label{font-size:10.5px}.fi input,.fi select,.fi textarea{padding:12px 14px;font-size:14px}.chk-g{grid-template-columns:1fr 1fr;gap:7px}.chi{padding:9px 10px}.chi span{font-size:11px}.btn-sub{font-size:14px;padding:15px;letter-spacing:.5px}.fn{font-size:11px}.ct-g{grid-template-columns:1fr;gap:28px}.ct-c{padding:16px;gap:14px}.ct-ci{width:42px;height:42px;flex-shrink:0}.ct-i h4{font-size:13px}.ct-i p,.ct-i a{font-size:13.5px}.mp{height:200px}.rq{padding:18px;font-size:12.5px}footer{padding:36px 16px 20px}.ft-in{grid-template-columns:1fr 1fr;gap:28px}.ft-in>div:first-child{grid-column:span 2}.ft-ds{max-width:100%;font-size:12.5px}.ft-bt{flex-direction:column;align-items:flex-start;gap:6px;font-size:11.5px}.mx{padding:28px 18px;border-radius:16px}.ma{flex-direction:column;gap:10px}.mc,.mo{flex:none;width:100%;padding:13px}.pg-det{grid-template-columns:repeat(2,1fr);gap:14px}.cart-fab{bottom:22px;right:18px;padding:12px 18px;font-size:13px}.cart-panel{width:100%;max-width:100vw}}
+@media(max-width:767px){#hero{min-height:auto!important;padding-top:88px!important;padding-bottom:36px!important;align-items:flex-start!important}.hero-photo{background-position:72% top!important}.hero-wrap{grid-template-columns:1fr!important;gap:28px!important}.hr-side{margin-top:0!important;width:100%!important}.vis-card{margin-bottom:0!important}}
+@media(max-width:480px){header{padding:0 12px}.logo-name{font-size:15px;letter-spacing:1px}.logo-tag{display:none}.logo-mark{width:36px;height:36px}#hero{padding:76px 12px 90px}.h-title{font-size:clamp(1.75rem,9.5vw,2.4rem);line-height:1.1}.h-badge{font-size:10.5px;padding:6px 12px;gap:7px}.h-dot{width:6px;height:6px}.h-desc{font-size:13.5px;line-height:1.75}.btn-p,.btn-o{padding:14px 16px;font-size:13.5px;border-radius:9px}.h-stats{grid-template-columns:repeat(3,1fr);gap:0}.hs{padding:0 8px;text-align:center}.hs-n{font-size:1.45rem}.hs-l{font-size:9.5px}.hero-wave{height:80px}.dol-logo{width:78px;height:78px}.dol-logo svg{width:34px;height:34px}.dol-logo span{font-size:12px!important;letter-spacing:2px!important}.dol-brand{font-size:1.6rem;letter-spacing:2px}.dol-eye{font-size:10px}.dol-desc{font-size:13px}section{padding:48px 12px}#dolphin{padding:28px 12px}.sh{margin-bottom:32px}.ab-t h2{font-size:1.5rem}.af-ic{width:36px;height:36px}.af-tx h4{font-size:13px}.af-tx p{font-size:12px}.ab-sg{grid-template-columns:1fr 1fr;gap:10px}.as{padding:18px 14px}.as-n{font-size:2rem}.as.f .as-n{font-size:2.4rem}.as-l{font-size:12px}.pg{grid-template-columns:1fr}.pc-tp{height:130px}.pc-nm{font-size:14px}.tab-btn{padding:7px 13px;font-size:11.5px}.cl-g{grid-template-columns:1fr 1fr;gap:10px}.cl{padding:18px 12px}.cl-ic{width:50px;height:50px;border-radius:12px}.cl-ic svg{width:28px;height:28px}.cl-nm{font-size:12.5px}.cl-ds{font-size:11.5px}.chk-g{grid-template-columns:1fr}.btn-sub{font-size:13.5px;padding:14px}.vis-card{padding:12px;border-radius:12px}.vc-items{grid-template-columns:1fr 1fr 1fr;gap:6px}.vci{padding:10px 6px;gap:6px;border-radius:8px}.vci-ic{width:34px;height:34px;border-radius:7px}.vci-ic svg{width:16px;height:16px}.vci-t{font-size:10px;line-height:1.3}.ft-in{grid-template-columns:1fr;gap:24px}.ft-in>div:first-child{grid-column:span 1}.ft-col h5{font-size:11px;margin-bottom:12px}.ft-col ul li a{font-size:12.5px}.ft-bt p{font-size:11px}.mx{padding:24px 14px}.mx h3{font-size:1.2rem}.mx input,.mx textarea{padding:11px 13px;font-size:13.5px}.pg-det{grid-template-columns:1fr}.pdc-btns{flex-direction:row;align-items:center;justify-content:flex-end}.pdc-cart{border-radius:7px}.pdc-qty{border-radius:8px}.pdc-qb{width:32px;height:34px;font-size:20px}.pdc-qv{min-width:32px;height:34px;font-size:14px}}
+@media(max-width:600px){.pdc-ft{flex-wrap:nowrap;gap:8px;padding:10px 14px}.pdc-btns{flex-shrink:0}.pdc-qty,.pdc-cart{flex-shrink:0}}
+.prod-search-wrap {
+  max-width: 520px;
+  margin: 0 auto 36px;
+  position: relative;
+}
+.prod-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f2f7ff;
+  border: 1.5px solid var(--gl);
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: border-color .2s;
+}
+.prod-search-box:focus-within {
+  border-color: var(--ba);
+  background: #fff;
+}
+.prod-search-box input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  color: var(--td);
+}
+.prod-search-box input::placeholder { color: var(--gm); }
+.search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--gm);
+  font-size: 14px;
+  padding: 0 2px;
+  line-height: 1;
+  transition: color .2s;
+}
+.search-clear:hover { color: var(--td); }
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  background: #fff;
+  border: 1px solid var(--gl);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(21,88,192,.12);
+  z-index: 100;
+  max-height: 380px;
+  overflow-y: auto;
+}
+.sr-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background .2s;
+  border-bottom: 1px solid var(--gl);
+}
+.sr-item:last-child { border-bottom: none; }
+.sr-item:hover { background: var(--ws); }
+.sr-cat {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ba);
+  font-weight: 700;
+  flex-shrink: 0;
+  min-width: 60px;
+}
+.sr-name { font-size: 13px; font-weight: 600; color: var(--td); }
+.sr-sub { font-size: 11.5px; color: var(--tm); margin-top: 1px; }
+.sr-empty { padding: 20px; text-align: center; color: var(--gm); font-size: 13px; }
+</style>
+</head><body>
+<header id="hdr">
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" width="46" height="46">
+        <defs><linearGradient id="lgg" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2575f5"/><stop offset="100%" stop-color="#0094c6"/></linearGradient><linearGradient id="lgg2" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4a99ff" stop-opacity=".25"/><stop offset="100%" stop-color="#00b8e8" stop-opacity=".1"/></linearGradient></defs>
+        <rect width="46" height="46" rx="11" fill="url(#lgg)"/><rect width="46" height="46" rx="11" fill="url(#lgg2)"/>
+        <path d="M16.5 7.5h13M19.5 7.5v9.5L13 27a4 4 0 003.2 6.5h13.6A4 4 0 0033 27l-6.5-10V7.5" stroke="white" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="29" r="1.5" fill="rgba(255,255,255,.65)"/><circle cx="25" cy="32" r="1.1" fill="rgba(255,255,255,.5)"/><circle cx="23" cy="27" r="1" fill="rgba(255,255,255,.55)"/>
+      </svg>
+    </div>
+    <div class="logo-info"><span class="logo-name">ДС ПРОФ</span><span class="logo-tag">Проф. снабжение предприятий</span></div>
+  </a>
+  <nav><a href="#about">О компании</a><a href="#dolphin">DOLPHIN</a><a href="#products">Каталог</a><a href="#clients">Клиенты</a><a href="#contacts">Контакты</a></nav>
+  <button class="btn-nav hd-btn-desk" onclick="toOrder()">Оставить заявку</button>
+  <button class="burger" id="burger" onclick="toggleMenu()" aria-label="Меню"><span></span><span></span><span></span></button>
+</header>
+<div class="mob-nav" id="mobNav">
+  <a href="#about" onclick="closeMobNav()">О компании</a><a href="#dolphin" onclick="closeMobNav()">DOLPHIN</a><a href="#products" onclick="closeMobNav()">Каталог</a><a href="#clients" onclick="closeMobNav()">Клиенты</a><a href="#contacts" onclick="closeMobNav()">Контакты</a>
+  <button class="btn-mob-order" onclick="closeMobNav();toOrder()">Оставить заявку</button>
+</div>
+
+<section id="hero">
+  <div class="hero-photo"></div><div class="hero-overlay"></div><div class="hero-scan"></div><div class="h-grid"></div><div class="h-orb h-orb1"></div><div class="ptcls" id="ptcls"></div>
+  <div class="hero-wrap">
+    <div class="hl">
+      <div class="h-badge"><div class="h-dot"></div>Официальный дистрибьютор DOLPHIN</div>
+      <h1 class="h-title"><span class="lt">Комплексное</span><br>снабжение<br><span class="ac">предприятий</span></h1>
+      <p class="h-desc">Профессиональная химия, расходные материалы, упаковка, спецодежда и СИЗ — всё необходимое для пищевой промышленности, ресторанов и отелей.</p>
+      <div class="h-ctas">
+        <a href="#products" class="btn-p">Смотреть каталог <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#order" class="btn-o"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1v13M1 7.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Оставить заявку</a>
+      </div>
+      <div class="h-stats">
+        <div class="hs"><div class="hs-n">10<span>+</span></div><div class="hs-l">Лет на рынке</div></div>
+        <div class="hs"><div class="hs-n">500<span>+</span></div><div class="hs-l">Предприятий</div></div>
+        <div class="hs"><div class="hs-n">3<span>K+</span></div><div class="hs-l">Позиций</div></div>
+      </div>
+    </div>
+    <div class="hr-side">
+      <div class="vis-card">
+        <div class="vc-hd"><div class="vc-ic"><svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M9.5 3.5h7M11.5 3.5v7L6 17a5 5 0 004 8h6a5 5 0 004-8l-5.5-6.5V3.5" stroke="#2575f5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="19" r="1.2" fill="#2575f5" opacity=".7"/><circle cx="15" cy="21" r=".9" fill="#2575f5" opacity=".5"/></svg></div><div><div class="vc-t">Ассортимент ДС ПРОФ</div><div class="vc-s">Профессиональные решения для бизнеса</div></div></div>
+        <div class="vc-items">
+          <div class="vci"><div class="vci-ic" style="background:linear-gradient(135deg,rgba(37,117,245,.2),rgba(37,117,245,.1))"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M6.5 2h6M8 2v5.5L4.5 13a3 3 0 002.5 5h5a3 3 0 002.5-5L11 7.5V2" stroke="#2575f5" stroke-width="1.5" stroke-linecap="round"/><circle cx="8.5" cy="15" r="1" fill="#2575f5" opacity=".6"/></svg></div><div><div class="vci-t">Профессиональная химия</div><div class="vci-s">Клининг, кухня, прачечная</div></div></div>
+          <div class="vci"><div class="vci-ic" style="background:linear-gradient(135deg,rgba(0,148,198,.2),rgba(0,148,198,.1))"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><rect x="3" y="5" width="13" height="11" rx="2" stroke="#0094c6" stroke-width="1.5"/><path d="M7 5V4a2 2 0 014 0v1" stroke="#0094c6" stroke-width="1.5"/><path d="M6.5 10.5h6M9.5 8v5" stroke="#0094c6" stroke-width="1.3" stroke-linecap="round"/></svg></div><div><div class="vci-t">Расходные материалы и упаковка</div><div class="vci-s">Контейнеры, плёнки, посуда</div></div></div>
+          <div class="vci"><div class="vci-ic" style="background:linear-gradient(135deg,rgba(240,144,10,.2),rgba(240,144,10,.1))"><svg width="19" height="19" viewBox="0 0 19 19" fill="none"><path d="M9.5 2L3.5 5v6c0 3.5 2.5 5.5 6 6 3.5-.5 6-2.5 6-6V5L9.5 2z" stroke="#e08000" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 9.5l2 2 3.5-3.5" stroke="#e08000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="vci-t">Средства защиты и спецодежда</div><div class="vci-s">Перчатки, маски, халаты</div></div></div>
+        </div>
+      </div>
+      <div class="fb fb1"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5l2.5 2.5 6.5-6.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Прямые поставки</div>
+      <div class="fb fb2">🐬 DOLPHIN Partner</div>
+    </div>
+  </div>
+  <div class="hero-wave"></div>
+</section>
+
+<div id="dolphin">
+  <div class="dol-wrap">
+    <div class="dol-logo fs">
+      <svg width="54" height="54" viewBox="0 0 54 54" fill="none"><defs><linearGradient id="dg" x1="0" y1="0" x2="54" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00b8e8"/><stop offset="100%" stop-color="#2575f5"/></linearGradient></defs><path d="M9 35c4-11 14-19 27-15-4 9-13 17-27 15z" stroke="url(#dg)" stroke-width="2.2" fill="none"/><path d="M36 20c2-4 6-8 10-8-1 6-4 10-10 8z" fill="url(#dg)" opacity=".65"/><path d="M9 35c-2 5-2 11 2 12" stroke="url(#dg)" stroke-width="2.2" stroke-linecap="round"/><circle cx="38" cy="17" r="2.2" fill="url(#dg)" opacity=".85"/><path d="M20 28c2 2 5 3 8 3" stroke="url(#dg)" stroke-width="1.5" stroke-linecap="round" opacity=".5"/></svg>
+      <span style="font-family:'Montserrat',sans-serif;font-weight:900;font-size:14px;color:rgba(0,184,232,.9);letter-spacing:3px">DOLPHIN</span>
+    </div>
+    <div class="dol-txt fu">
+      <div class="dol-eye">Официальный дистрибьютор</div>
+      <div class="dol-brand">DOLPHIN</div>
+      <p class="dol-desc">ООО ДС ПРОФ является официальным дистрибьютором профессиональной химии Dolphin. Весь ассортимент бренда — по прямым ценам, без посредников.</p>
+    </div>
+    <div class="dol-badges fu d2">
+      <div class="db"><div class="db-n">100%</div><div class="db-l">Оригинал</div></div>
+      <div class="db" style="border-color:rgba(0,148,198,.2);background:rgba(0,148,198,.08)"><div class="db-n">РФ</div><div class="db-l">Доставка по стране</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="si">
+    <div class="ab-g">
+      <div class="fl">
+        <h2 style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:2.15rem;color:var(--td);line-height:1.2;margin-bottom:17px">ООО <span style="color:var(--bb)">ДС ПРОФ</span> — надёжный партнёр вашего бизнеса</h2>
+        <p class="ab-t">Более 10 лет мы занимаемся комплексным обеспечением предприятий пищевой промышленности, комбинатов питания, ресторанов, кафе и гостиниц.</p>
+        <p class="ab-t">Накопленный опыт позволяет подобрать оптимальные индивидуальные решения для каждого клиента. Благодаря прямым поставкам от производителей — предлагаем лучшие коммерческие условия.</p>
+        <div class="ab-feats">
+          <div class="af"><div class="af-ic"><svg viewBox="0 0 22 22" fill="none"><path d="M11 2L3 6v7c0 4 3 7.5 8 9 5-1.5 8-5 8-9V6L11 2z" stroke="#1558c0" stroke-width="1.7" stroke-linejoin="round"/><path d="M7.5 11l2.5 2.5 4.5-4.5" stroke="#1558c0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="af-tx"><h4>Индивидуальный подход</h4><p>Подбираем оптимальные решения под нужды каждого клиента</p></div></div>
+          <div class="af"><div class="af-ic"><svg viewBox="0 0 22 22" fill="none"><rect x="2" y="8" width="18" height="12" rx="2" stroke="#1558c0" stroke-width="1.7"/><path d="M6 8V6a5 5 0 0110 0v2" stroke="#1558c0" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="14" r="2" stroke="#1558c0" stroke-width="1.5"/></svg></div><div class="af-tx"><h4>Прямые поставки</h4><p>Работаем напрямую с производителями и импортёрами</p></div></div>
+          <div class="af"><div class="af-ic"><svg viewBox="0 0 22 22" fill="none"><path d="M11 2l2.5 5 5.5.8-4 3.9.95 5.5L11 14.5l-4.95 2.7.95-5.5L3 7.8l5.5-.8L11 2z" stroke="#1558c0" stroke-width="1.5" stroke-linejoin="round"/></svg></div><div class="af-tx"><h4>Качество гарантировано</h4><p>Сертифицированная продукция от проверенных брендов</p></div></div>
+        </div>
+      </div>
+      <div class="ab-sg fr">
+        <div class="as f"><div class="as-n">10+</div><div class="as-l">Лет успешной работы на рынке</div></div>
+        <div class="as"><div class="as-n">500+</div><div class="as-l">Предприятий</div></div>
+        <div class="as"><div class="as-n">3K+</div><div class="as-l">Позиций в ассортименте</div></div>
+      </div>
+    </div>
+  </div>
+</section><section id="products">
+  <div class="si">
+    <div class="sh fu">
+      <div class="se">Наш ассортимент</div>
+      <h2 class="st">Каталог <span class="ac">продукции</span></h2>
+      <p class="ss">Профхимия, расходники, упаковка, средства защиты — всё для вашего предприятия</p>
+      <div class="sd"></div>
+    </div>
+	<!-- SEARCH BAR -->
+<div class="prod-search-wrap">
+  <div class="prod-search-box">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <circle cx="7" cy="7" r="5" stroke="#8aa3c2" stroke-width="1.6"/>
+      <path d="M11 11l3 3" stroke="#8aa3c2" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <input type="text" id="prodSearch" placeholder="Поиск по товарам..." oninput="searchProducts(this.value)">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()" style="display:none">✕</button>
+  </div>
+  <div id="searchResults" class="search-results" style="display:none"></div>
+</div>
+    <div class="p-tabs" id="pTabs">
+      <button class="tab-btn active" onclick="fc('all',this)">Все категории</button>
+      <button class="tab-btn" onclick="fc('chem',this)">Профхимия</button>
+      <button class="tab-btn" onclick="fc('pack',this)">Контейнеры и пищевая упаковка</button>
+      <button class="tab-btn" onclick="fc('hoz',this)">Хоз товары</button>
+      <button class="tab-btn" onclick="fc('inv',this)">Уборочный инвентарь</button>
+      <button class="tab-btn" onclick="fc('posuda',this)">Одноразовая посуда</button>
+      <button class="tab-btn" onclick="fc('upack',this)">Упаковочные материалы</button>
+      <button class="tab-btn" onclick="fc('siz',this)">СИЗ и средства защиты</button>
+      <button class="tab-btn" onclick="fc('mark',this)">Термоэтикетка чековая лента</button>
+      <button class="tab-btn" onclick="fc('grill',this)">Топливо для гриля</button>
+    </div>
+    <div class="cat-view">
+      <div class="pg" id="pg">
+      <!-- CHEM: Cleaning -->
+      <div class="pc d1" data-c="chem" onclick="showCat('cleaning')">
+        <div class="pc-tp ch"><img loading="lazy" src="img/cat-cleaning.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Профхимия · Клининг</div><div class="pc-nm">Средства для уборки помещений</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#2575f5" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#2575f5" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Твёрдые и ковровые поверхности</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#2575f5" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#2575f5" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Стекло, зеркала, интерьер</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#2575f5" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#2575f5" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Дезинфекция санузлов</div></div></div>
+        <div class="pc-ft"><span class="pc-tg">DOLPHIN</span><button class="pc-bt" onclick="event.stopPropagation();showCat('cleaning')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- CHEM: Laundry -->
+      <div class="pc d2" data-c="chem" onclick="showCat('laundry')">
+        <div class="pc-tp la"><img loading="lazy" src="img/cat-laundry.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Профхимия · Прачечная</div><div class="pc-nm">Средства для стирки и обработки</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#7c4dff" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#7c4dff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Стирка, усилители, кондиционеры</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#7c4dff" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#7c4dff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Отбеливатели</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#7c4dff" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#7c4dff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Пятновыводители</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#f0ecff;color:#7c4dff">DOLPHIN</span><button class="pc-bt" onclick="event.stopPropagation();showCat('laundry')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- CHEM: Kitchen -->
+      <div class="pc d3" data-c="chem" onclick="showCat('kitchen')">
+        <div class="pc-tp ki"><img loading="lazy" src="img/cat-kitchen.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Профхимия · Кухня</div><div class="pc-nm">Химия для профессиональной кухни</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#00a86b" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#00a86b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Мойка посуды и оборудования</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#00a86b" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#00a86b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ополаскиватели для ПММ</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#00a86b" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#00a86b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Дезинфекция рабочих поверхностей</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#e4fff0;color:#00a86b">DOLPHIN</span><button class="pc-bt" onclick="event.stopPropagation();showCat('kitchen')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- CHEM: Hygiene -->
+      <div class="pc d1" data-c="chem" onclick="showCat('hygiene')">
+        <div class="pc-tp hy"><img loading="lazy" src="img/cat-hygiene.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Профхимия · Гигиена</div><div class="pc-nm">Средства личной гигиены</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#0094c6" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#0094c6" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Жидкое мыло и антисептики</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#0094c6" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#0094c6" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Дезинфектанты для рук</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#0094c6" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#0094c6" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Шампуни и гели для душа</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#e0f5ff;color:#0094c6">DOLPHIN</span><button class="pc-bt" onclick="event.stopPropagation();showCat('hygiene')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- PACK: Контейнеры и пищевая упаковка (renamed) -->
+      <div class="pc d2" data-c="pack" onclick="showCat('pack')">
+        <div class="pc-tp pa"><img loading="lazy" src="img/cat-pack.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Упаковка</div><div class="pc-nm">Контейнеры и пищевая упаковка</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#2ea043" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#2ea043" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Пищевые контейнеры и лотки</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#2ea043" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#2ea043" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Лотки под запайку</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#2ea043" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#2ea043" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Пищевая плёнка</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#e4ffed;color:#2ea043">Опт/розница</span><button class="pc-bt" onclick="event.stopPropagation();showCat('pack')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- HOZ: Хоз товары (NEW) -->
+      <div class="pc d3" data-c="hoz" onclick="showCat('hoz')">
+        <div class="pc-tp" style="background:linear-gradient(135deg,#f0f4ff,#dce6f8)"><img loading="lazy" src="img/cat-hoz.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Хоз товары</div><div class="pc-nm">Хозяйственные товары</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#5c6bc0" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#5c6bc0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Фольга алюминиевая</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#5c6bc0" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#5c6bc0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Бумага для выпечки</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#5c6bc0" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#5c6bc0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Салфетки и полотенца</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#e8eaf6;color:#5c6bc0">Оптовые цены</span><button class="pc-bt" onclick="event.stopPropagation();showCat('hoz')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- INV: Уборочный инвентарь (NEW) -->
+      <div class="pc d1" data-c="inv" onclick="showCat('inv')">
+        <div class="pc-tp" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)"><img loading="lazy" src="img/cat-inv.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Уборочный инвентарь</div><div class="pc-nm">Инвентарь для уборки</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#388e3c" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#388e3c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Мусорные мешки и пакеты</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#388e3c" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#388e3c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Губки и скребки</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#388e3c" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#388e3c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Салфетки и тряпки для уборки</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#e8f5e9;color:#388e3c">Опт/розница</span><button class="pc-bt" onclick="event.stopPropagation();showCat('inv')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- POSUDA: Одноразовая посуда (NEW) -->
+      <div class="pc d2" data-c="posuda" onclick="showCat('posuda')">
+        <div class="pc-tp" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)"><img loading="lazy" src="img/cat-posuda.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Одноразовая посуда</div><div class="pc-nm">Посуда для общепита и кейтеринга</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#c2185b" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#c2185b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Стаканы, тарелки, вилки, ложки</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#c2185b" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#c2185b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Крышки, трубочки, размешиватели</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#c2185b" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#c2185b" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Бумажные стаканы для кофе</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#fce4ec;color:#c2185b">Опт/розница</span><button class="pc-bt" onclick="event.stopPropagation();showCat('posuda')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- UPACK: Упаковочные материалы (NEW) -->
+      <div class="pc d3" data-c="upack" onclick="showCat('upack')">
+        <div class="pc-tp" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)"><img loading="lazy" src="img/cat-upack.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Упаковочные материалы</div><div class="pc-nm">Стрейч-плёнка и упаковочные расходники</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#1565c0" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#1565c0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Стрейч-плёнка ручная и машинная</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#1565c0" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#1565c0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Скотч упаковочный</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#1565c0" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#1565c0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Полиэтиленовые и бумажные пакеты</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#e3f2fd;color:#1565c0">Оптовые цены</span><button class="pc-bt" onclick="event.stopPropagation();showCat('upack')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- SIZ -->
+      <div class="pc d1" data-c="siz" onclick="showCat('siz')">
+        <div class="pc-tp si"><img loading="lazy" src="img/cat-siz.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">СИЗ · Спецодежда</div><div class="pc-nm">Средства защиты и спецодежда</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#e08000" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#e08000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Перчатки нитриловые, виниловые, латексные</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#e08000" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#e08000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Маски, респираторы, халаты</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#e08000" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#e08000" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Шапочки, бахилы, очки</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#fff4de;color:#e08000">Сертифицировано</span><button class="pc-bt" onclick="event.stopPropagation();showCat('siz')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- MARK: Термоэтикетка чековая лента (renamed) -->
+      <div class="pc d2" data-c="mark" onclick="showCat('marking')">
+        <div class="pc-tp ma-hdr"><img loading="lazy" src="img/cat-marking.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Маркировка · Касса</div><div class="pc-nm">Термоэтикетка чековая лента</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#b5850a" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#b5850a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Чековая лента для ККТ и терминалов</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#b5850a" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#b5850a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Термоэтикетки для маркировки товаров</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#b5850a" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#b5850a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Рибоны для термотрансферной печати</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#fff8e1;color:#b5850a">Оптовые цены</span><button class="pc-bt" onclick="event.stopPropagation();showCat('marking')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      <!-- GRILL: New image -->
+      <div class="pc d3" data-c="grill" onclick="showCat('grill')">
+        <div class="pc-tp gr-hdr"><img loading="lazy" src="img/cat-grill.webp" alt=""></div>
+        <div class="pc-bd"><div class="pc-ca">Топливо · Барбекю</div><div class="pc-nm">Топливо для гриля</div><div class="pc-ls"><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#e65100" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#e65100" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Уголь для мангала и барбекю</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#e65100" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#e65100" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Щепа для копчения</div><div class="pc-li"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#e65100" stroke-width="1.3"/><path d="M4.5 7l1.5 1.5 3-3" stroke="#e65100" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Оптовые поставки</div></div></div>
+        <div class="pc-ft"><span class="pc-tg" style="background:#fff3e0;color:#e65100">Сезонный товар</span><button class="pc-bt" onclick="event.stopPropagation();showCat('grill')">Смотреть <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      </div>
+      </div>
+    </div>
+    <!-- ═══ LEVEL 2: PRODUCT DETAIL VIEWS ═══ -->
+
+    <!-- CLEANING -->
+    <div class="prod-view" id="prod-cleaning">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Клининг</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Клининг — <span>профессиональные средства</span></h3><p>Полный каталог: полы, сантехника, интерьер и стекло</p></div>
+      <div class="subcat-title"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="16" height="16" rx="2" stroke="#2575f5" stroke-width="1.5"/><path d="M2 10h16M10 2v16" stroke="#2575f5" stroke-width="1.3" opacity=".5"/></svg>Уборка твёрдых поверхностей</div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp ch"><span class="pdc-brand">Dolphin</span><span class="pdc-art">D 001</span></div><div class="pdc-bd"><div class="pdc-nm">BASIC</div><div class="pdc-sub">Ежедневная уборка полов</div><div class="pdc-desc">Слабощелочное низкопенное концентрированное средство для мытья полов слабой степени загрязнения.</div><div class="pdc-use"><strong>Применение</strong>Разведите 10–30 мл на 10 л воды. Нанесите раствор мопом или поломоечной машиной.</div></div><div class="pdc-ft"><span class="pdc-tg">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin BASIC D 001','Ежедневная уборка полов')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp ch"><span class="pdc-brand">Dolphin</span><span class="pdc-art">D 002</span></div><div class="pdc-bd"><div class="pdc-nm">BASIC PLUS</div><div class="pdc-sub">Мытьё полов средней загрязнённости</div><div class="pdc-desc">Слабощелочное низкопенное средство для ежедневного и периодического мытья полов средней степени загрязнения.</div><div class="pdc-use"><strong>Применение</strong>Разведите 15–50 мл на 10 л воды. Протрите пол мопом или поломоечной машиной.</div></div><div class="pdc-ft"><span class="pdc-tg">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin BASIC PLUS D 002','Мытьё полов средней загрязнённости')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp ch"><span class="pdc-brand">Dolphin</span><span class="pdc-art">D 004</span></div><div class="pdc-bd"><div class="pdc-nm">FORTE</div><div class="pdc-sub">Полы с сильным загрязнением</div><div class="pdc-desc">Щелочное низкопенное средство для регулярной и генеральной уборки полов с сильной степенью загрязнения.</div><div class="pdc-use"><strong>Применение</strong>Разведите 20–80 мл на 10 л воды. При машинной уборке — добавьте в бак поломоечной машины.</div></div><div class="pdc-ft"><span class="pdc-tg">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin FORTE D 004','Полы с сильным загрязнением')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+      <div class="subcat-title"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 12c0 3.3 2.7 6 6 6s6-2.7 6-6" stroke="#2575f5" stroke-width="1.5" stroke-linecap="round"/><path d="M2 12h16" stroke="#2575f5" stroke-width="1.5"/></svg>Сантехника и дезинфекция</div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp sa"><span class="pdc-brand">Dolphin</span><span class="pdc-art">D 010</span></div><div class="pdc-bd"><div class="pdc-nm">SANI MAX</div><div class="pdc-sub">Комплексная уборка санузлов</div><div class="pdc-desc">Сильнощелочное концентрированное средство для комплексной уборки сантехнических помещений.</div><div class="pdc-use"><strong>Применение</strong>Разведите 20–50 мл на 1 л воды. Нанесите на поверхность, выдержите 3–5 мин, смойте.</div></div><div class="pdc-ft"><span class="pdc-tg">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin SANI MAX D 010','Комплексная уборка санузлов')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp sa"><span class="pdc-brand">Dolphin</span><span class="pdc-art">D 011</span></div><div class="pdc-bd"><div class="pdc-nm">SANI ACID</div><div class="pdc-sub">Очистка минеральных отложений</div><div class="pdc-desc">Кислотное средство для очистки известкового налёта, ржавчины и водного камня на сантехнике.</div><div class="pdc-use"><strong>Применение</strong>Разведите 30–100 мл на 1 л воды. Выдержите 5–15 мин, протрите и промойте.</div></div><div class="pdc-ft"><span class="pdc-tg">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin SANI ACID D 011','Очистка минеральных отложений')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- HYGIENE -->
+    <div class="prod-view" id="prod-hygiene">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Гигиена</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Гигиена — <span>средства для рук</span></h3><p>Жидкое мыло, антисептики и дезинфекция</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp hy"><span class="pdc-brand">Dolphin</span><span class="pdc-art">D 023</span></div><div class="pdc-bd"><div class="pdc-nm">PHIN</div><div class="pdc-sub">Гель-мыло со смягчающими добавками</div><div class="pdc-desc">Нейтральное гель-мыло с запахом зелёного банана. Бережно очищает кожу рук, не пересушивая.</div></div><div class="pdc-ft"><span class="pdc-tg">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin PHIN D 023','Гель-мыло')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp de"><span class="pdc-brand">Dolphin</span><span class="pdc-art">К 002</span></div><div class="pdc-bd"><div class="pdc-nm">SEPTO-MAX</div><div class="pdc-sub">Дезинфекция рук</div><div class="pdc-desc">Готовое средство для дезинфекции рук на спиртовой основе. Антисептическая защита без смывания.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#ffe6e6;color:#c03030">Дезинфекция</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin SEPTO-MAX К 002','Дезинфекция рук')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- KITCHEN -->
+    <div class="prod-view" id="prod-kitchen">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Кухня</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Кухня — <span>профессиональная химия</span></h3><p>Средства для ПММ, ручной мойки и дезинфекции поверхностей</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp ki"><span class="pdc-brand">Imnova</span><span class="pdc-art">D 028</span></div><div class="pdc-bd"><div class="pdc-nm">REGULAR</div><div class="pdc-sub">ПММ — мягкая и средняя вода</div><div class="pdc-desc">Универсальное средство для мытья посуды в посудомоечной машине в воде малой и средней жёсткости.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e4fff0;color:#00a86b">Imnova</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Imnova REGULAR D 028','ПММ')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp ki"><span class="pdc-brand">Imnova</span><span class="pdc-art">D 049</span></div><div class="pdc-bd"><div class="pdc-nm">PRIME PLUS</div><div class="pdc-sub">Ручная мойка посуды</div><div class="pdc-desc">Многоцелевое концентрированное средство для ручной мойки на пищевых производствах и в общепите.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e4fff0;color:#00a86b">Imnova</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Imnova PRIME PLUS D 049','Ручная мойка')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp de"><span class="pdc-brand">Dolphin</span><span class="pdc-art">К 006</span></div><div class="pdc-bd"><div class="pdc-nm">DEZO PROM</div><div class="pdc-sub">Дезинфекция кухонных поверхностей</div><div class="pdc-desc">Концентрированное дезинфицирующее средство с моющим действием для обработки поверхностей и оборудования.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#ffe6e6;color:#c03030">Дезинфекция</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin DEZO PROM К 006','Дезинфекция поверхностей')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- LAUNDRY -->
+    <div class="prod-view" id="prod-laundry">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Прачечная</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Прачечная — <span>химия для стирки</span></h3><p>Основные средства для стирки и пятновыводители</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp la"><span class="pdc-brand">Dolphin</span><span class="pdc-art">L 110</span></div><div class="pdc-bd"><div class="pdc-nm">ProLaun Core</div><div class="pdc-sub">Основное средство для стирки</div><div class="pdc-desc">Щелочное концентрированное универсальное средство для стирки. Эффективно при 40–90 °C.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#f0ecff;color:#7c4dff">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin ProLaun Core L 110','Основное средство для стирки')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp la"><span class="pdc-brand">Dolphin</span><span class="pdc-art">L 120</span></div><div class="pdc-bd"><div class="pdc-nm">ProLaun Core Plus</div><div class="pdc-sub">Стирка с энзимами</div><div class="pdc-desc">Средство с энзимами для низкотемпературной стирки (30–60 °C). Расщепляет белковые и крахмальные загрязнения.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#f0ecff;color:#7c4dff">DOLPHIN</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Dolphin ProLaun Core Plus L 120','Стирка с энзимами')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+    <!-- PACK: Контейнеры и пищевая упаковка -->
+    <div class="prod-view" id="prod-pack">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Контейнеры и пищевая упаковка</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Контейнеры и <span>пищевая упаковка</span></h3><p>Контейнеры, лотки, пищевая плёнка — для хранения и транспортировки продуктов</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e4ffe6,#c5f0c8)"><span class="pdc-brand">Упаковка</span></div><div class="pdc-bd"><div class="pdc-nm">Пищевые контейнеры</div><div class="pdc-sub">Одноразовая и многоразовая тара</div><div class="pdc-desc">Контейнеры из PP и PET различных объёмов (от 100 мл до 3 л). Герметичные крышки, возможность использования в СВЧ и холодильнике.</div><div class="pdc-use"><strong>Применение</strong>Хранение и транспортировка готовых блюд, полуфабрикатов, сыпучих и жидких продуктов.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e4ffed;color:#2ea043">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Пищевые контейнеры','Одноразовая и многоразовая тара')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e4ffe6,#c5f0c8)"><span class="pdc-brand">Упаковка</span></div><div class="pdc-bd"><div class="pdc-nm">Лотки упаковочные</div><div class="pdc-sub">Под запайку и со съёмной крышкой</div><div class="pdc-desc">Лотки из вспененного полистирола и PET для мяса, рыбы, овощей и кулинарии. Размеры S/M/L/XL.</div><div class="pdc-use"><strong>Применение</strong>Расфасовка мясо-рыбной продукции, кулинарии, выпечки на предприятиях торговли и пищевых производствах.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e4ffed;color:#2ea043">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Лотки упаковочные','Под запайку и со съёмной крышкой')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e4ffe6,#c5f0c8)"><span class="pdc-brand">Упаковка</span></div><div class="pdc-bd"><div class="pdc-nm">Плёнка пищевая</div><div class="pdc-sub">Стрейч и пищевая плёнка</div><div class="pdc-desc">Прозрачная пищевая плёнка для упаковки продуктов. Не пропускает запахи, сохраняет свежесть. Ширина 30–50 см, длина 300 м.</div><div class="pdc-use"><strong>Применение</strong>Упаковка готовых блюд, полуфабрикатов, сыров, мясных и рыбных изделий.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e4ffed;color:#2ea043">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Плёнка пищевая','Стрейч и пищевая плёнка')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- HOZ: Хоз товары (NEW) -->
+    <div class="prod-view" id="prod-hoz">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Хоз товары</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Хоз товары — <span>для кухни и быта</span></h3><p>Фольга, бумага для выпечки, салфетки и полотенца для предприятий</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)"><span class="pdc-brand">Хоз товары</span></div><div class="pdc-bd"><div class="pdc-nm">Фольга алюминиевая</div><div class="pdc-sub">Для запекания, хранения и сервировки</div><div class="pdc-desc">Алюминиевая фольга пищевого класса толщиной 9–14 мкм. Ширина 29 и 45 см. Выдерживает до +230 °C. Идеальна для запекания мяса, рыбы, овощей и хранения горячих блюд.</div><div class="pdc-use"><strong>Применение</strong>Оборачивание продуктов для запекания, формирование порций, хранение горячих и холодных блюд, покрытие противней.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#f3e5f5;color:#7b1fa2">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Фольга алюминиевая','Для запекания и хранения')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)"><span class="pdc-brand">Хоз товары</span></div><div class="pdc-bd"><div class="pdc-nm">Бумага для выпечки</div><div class="pdc-sub">Пергамент и силиконизированная бумага</div><div class="pdc-desc">Бумага для выпечки с силиконовым покрытием, не требующая смазки. Ширина 38 и 45 см, рулоны по 25 и 50 м. Выдерживает до +220 °C. Не прилипает к продуктам.</div><div class="pdc-use"><strong>Применение</strong>Выстилание противней и форм, выпечка хлеба, кондитерских изделий, запекание мяса и рыбы.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#f3e5f5;color:#7b1fa2">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Бумага для выпечки','Пергамент и силиконизированная бумага')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)"><span class="pdc-brand">Хоз товары</span></div><div class="pdc-bd"><div class="pdc-nm">Салфетки бумажные</div><div class="pdc-sub">Для сервировки и протирки</div><div class="pdc-desc">Однослойные и двухслойные бумажные салфетки 24×24 и 33×33 см. Белые и цветные. Упаковки по 100 и 250 шт. Мягкие, хорошо впитывают.</div><div class="pdc-use"><strong>Применение</strong>Сервировка столов в ресторанах, кафе, столовых, барах. Протирка поверхностей и оборудования.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#f3e5f5;color:#7b1fa2">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Салфетки бумажные','Для сервировки и протирки')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#f3e5f5,#e1bee7)"><span class="pdc-brand">Хоз товары</span></div><div class="pdc-bd"><div class="pdc-nm">Полотенца бумажные</div><div class="pdc-sub">Рулонные и листовые полотенца</div><div class="pdc-desc">Бумажные полотенца в рулонах (150–200 м) и листовые V/Z-сложения. Однослойные и двухслойные. Белые и натуральные. Для диспенсеров и ручного использования.</div><div class="pdc-use"><strong>Применение</strong>Вытирание рук, протирка поверхностей, кухни ресторанов и кафе, санузлы, производственные помещения.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#f3e5f5;color:#7b1fa2">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Полотенца бумажные','Рулонные и листовые полотенца')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- INV: Уборочный инвентарь (NEW) -->
+    <div class="prod-view" id="prod-inv">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Уборочный инвентарь</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Уборочный <span>инвентарь</span></h3><p>Мусорные мешки, губки, тряпки, скребки — всё для чистоты и порядка</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)"><span class="pdc-brand">Инвентарь</span></div><div class="pdc-bd"><div class="pdc-nm">Мусорные мешки</div><div class="pdc-sub">Мешки для мусора различных объёмов</div><div class="pdc-desc">Прочные полиэтиленовые мешки 30, 60, 90, 120 и 240 л. Толщина 18–40 мкм. Цвета: чёрный, зелёный, белый. В рулоне 20–50 шт. Повышенная прочность на разрыв.</div><div class="pdc-use"><strong>Применение</strong>Офисы, рестораны, гостиницы, торговые центры, производственные цеха, уличные урны, клининг.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e8f5e9;color:#2e7d32">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Мусорные мешки','Мешки для мусора различных объёмов')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)"><span class="pdc-brand">Инвентарь</span></div><div class="pdc-bd"><div class="pdc-nm">Губки хозяйственные</div><div class="pdc-sub">Для мытья посуды и поверхностей</div><div class="pdc-desc">Губки с абразивным слоем и без. Стандартные (10×7 см) и профессиональные (14×9 см). Упаковки по 5 и 10 шт. Стойкие к моющим средствам и горячей воде.</div><div class="pdc-use"><strong>Применение</strong>Мытьё посуды, протирка рабочих поверхностей, чистка оборудования на кухне и в производственных помещениях.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e8f5e9;color:#2e7d32">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Губки хозяйственные','Для мытья посуды и поверхностей')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)"><span class="pdc-brand">Инвентарь</span></div><div class="pdc-bd"><div class="pdc-nm">Тряпки и салфетки для уборки</div><div class="pdc-sub">Микрофибра и нетканые материалы</div><div class="pdc-desc">Тряпки из микрофибры (40×40 см) и нетканые протирочные салфетки в рулонах. Высокая впитываемость, не оставляют ворса. Многоразовые и одноразовые.</div><div class="pdc-use"><strong>Применение</strong>Влажная и сухая уборка полов, стекол, мебели, оборудования. Протирка разделочных столов, барных стоек.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e8f5e9;color:#2e7d32">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Тряпки и салфетки','Микрофибра и нетканые материалы')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)"><span class="pdc-brand">Инвентарь</span></div><div class="pdc-bd"><div class="pdc-nm">Скребки и щётки</div><div class="pdc-sub">Для чистки поверхностей и оборудования</div><div class="pdc-desc">Скребки для стекол и кафеля, щётки ручные и на длинных ручках, ёршики для унитазов. Прочный пластик и нержавеющая сталь.</div><div class="pdc-use"><strong>Применение</strong>Удаление стойких загрязнений с кафеля, стёкол, решёток, гриль-оборудования, сантехники.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e8f5e9;color:#2e7d32">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Скребки и щётки','Для чистки поверхностей')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+    <!-- POSUDA: Одноразовая посуда (NEW) -->
+    <div class="prod-view" id="prod-posuda">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Одноразовая посуда</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Одноразовая <span>посуда</span></h3><p>Стаканы, тарелки, столовые приборы — для общепита, кейтеринга и доставки</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)"><span class="pdc-brand">Посуда</span></div><div class="pdc-bd"><div class="pdc-nm">Стаканы пластиковые</div><div class="pdc-sub">Прозрачные и белые стаканы</div><div class="pdc-desc">Одноразовые стаканы из PP и PS объёмом 100, 180, 200, 300 и 500 мл. Прозрачные и белые. В упаковке 50–100 шт. Подходят для горячих и холодных напитков.</div><div class="pdc-use"><strong>Применение</strong>Офисные кулеры, автоматы, столовые, фастфуд, кейтеринг, мероприятия.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fce4ec;color:#c2185b">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Стаканы пластиковые','Прозрачные и белые стаканы')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)"><span class="pdc-brand">Посуда</span></div><div class="pdc-bd"><div class="pdc-nm">Бумажные стаканы для кофе</div><div class="pdc-sub">С крышками, одно- и двуслойные</div><div class="pdc-desc">Бумажные стаканы для горячих напитков 250 и 350 мл с PE-покрытием. Доступны одно- и двуслойные (термо). Крышки с клапаном в комплекте или отдельно.</div><div class="pdc-use"><strong>Применение</strong>Кофейни, рестораны на вынос, автозаправки, вендинг, доставка еды.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fce4ec;color:#c2185b">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Бумажные стаканы для кофе','С крышками')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)"><span class="pdc-brand">Посуда</span></div><div class="pdc-bd"><div class="pdc-nm">Тарелки одноразовые</div><div class="pdc-sub">Плоские и глубокие, разных размеров</div><div class="pdc-desc">Тарелки из PP и PS: плоские (d 165, 205, 220 мм), суповые (d 145, 165 мм). Белые, в упаковке 50–100 шт. Прочные, не деформируются от горячего.</div><div class="pdc-use"><strong>Применение</strong>Шведский стол, кейтеринг, столовые, пикники, корпоративные мероприятия.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fce4ec;color:#c2185b">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Тарелки одноразовые','Плоские и глубокие')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)"><span class="pdc-brand">Посуда</span></div><div class="pdc-bd"><div class="pdc-nm">Столовые приборы</div><div class="pdc-sub">Вилки, ложки, ножи одноразовые</div><div class="pdc-desc">Одноразовые столовые приборы из PS: вилки, столовые и чайные ложки, ножи. Белые и прозрачные. Индивидуальная упаковка или россыпь по 100 шт.</div><div class="pdc-use"><strong>Применение</strong>Доставка еды, фастфуд, столовые, кулинарии, вендинговые автоматы.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fce4ec;color:#c2185b">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Столовые приборы','Вилки, ложки, ножи одноразовые')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)"><span class="pdc-brand">Посуда</span></div><div class="pdc-bd"><div class="pdc-nm">Крышки и трубочки</div><div class="pdc-sub">Для стаканов и напитков</div><div class="pdc-desc">Крышки для бумажных и пластиковых стаканов с клапаном и без. Коктейльные трубочки прямые и гофрированные d 6 и 8 мм. Размешиватели.</div><div class="pdc-use"><strong>Применение</strong>Кофейни, бары, рестораны на вынос, автозаправки, кейтеринг.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fce4ec;color:#c2185b">Опт/розница</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Крышки и трубочки','Для стаканов и напитков')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- UPACK: Упаковочные материалы (NEW) -->
+    <div class="prod-view" id="prod-upack">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Упаковочные материалы</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Упаковочные <span>материалы</span></h3><p>Стрейч-плёнка, скотч, пакеты — для складов, производств и логистики</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)"><span class="pdc-brand">Упаковка</span></div><div class="pdc-bd"><div class="pdc-nm">Стрейч-плёнка ручная</div><div class="pdc-sub">Для ручной обмотки грузов</div><div class="pdc-desc">Стрейч-плёнка из линейного полиэтилена для ручной обмотки грузов и паллет. Толщина 17, 20 и 23 мкм. Ширина 450 и 500 мм. Вес нетто 1,5–2 кг. Растяжение до 200%.</div><div class="pdc-use"><strong>Применение</strong>Упаковка и фиксация грузов на паллетах, защита товаров при хранении и транспортировке, группировка коробок.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e3f2fd;color:#1565c0">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Стрейч-плёнка ручная','Для ручной обмотки грузов')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)"><span class="pdc-brand">Упаковка</span></div><div class="pdc-bd"><div class="pdc-nm">Стрейч-плёнка машинная</div><div class="pdc-sub">Для паллетообмотчиков</div><div class="pdc-desc">Машинная стрейч-плёнка для автоматических и полуавтоматических паллетообмотчиков. Толщина 17, 20, 23 мкм. Ширина 500 мм. Вес нетто 15–16 кг. Высокая прочность на разрыв.</div><div class="pdc-use"><strong>Применение</strong>Автоматическая обмотка паллет на складах и производствах, транспортная логистика, крупные отгрузки.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e3f2fd;color:#1565c0">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Стрейч-плёнка машинная','Для паллетообмотчиков')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)"><span class="pdc-brand">Упаковка</span></div><div class="pdc-bd"><div class="pdc-nm">Скотч упаковочный</div><div class="pdc-sub">Клейкая лента для запечатывания коробок</div><div class="pdc-desc">Полипропиленовый скотч с акриловым клеем. Ширина 48 мм, длина 66 и 132 м. Прозрачный, коричневый и цветной. Клеевой слой 40–45 мкм — надёжная фиксация.</div><div class="pdc-use"><strong>Применение</strong>Запечатывание картонных коробок, маркировка грузов, упаковка отправлений, склады и производства.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e3f2fd;color:#1565c0">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Скотч упаковочный','Клейкая лента для запечатывания')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)"><span class="pdc-brand">Упаковка</span></div><div class="pdc-bd"><div class="pdc-nm">Пакеты и мешки</div><div class="pdc-sub">Полиэтиленовые и бумажные пакеты</div><div class="pdc-desc">Фасовочные пакеты, крафтовые пакеты с ручками и без, курьерские пакеты. Полиэтилен 10–80 мкм. Крафт 70–120 г/м². Размеры от S до XL.</div><div class="pdc-use"><strong>Применение</strong>Фасовка товаров, упаковка заказов доставки, торговые точки, рестораны на вынос.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#e3f2fd;color:#1565c0">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Пакеты и мешки','Полиэтиленовые и бумажные')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+    <!-- SIZ: Средства защиты (UPDATED - 3 glove types) -->
+    <div class="prod-view" id="prod-siz">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>СИЗ</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>СИЗ — <span>средства индивидуальной защиты</span></h3><p>Перчатки, маски, спецодежда, защитные аксессуары</p></div>
+      <div class="subcat-title"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2L4 5.5v6c0 3.5 2.5 6 6 7 3.5-1 6-3.5 6-7v-6L10 2z" stroke="#e08000" stroke-width="1.5"/></svg>Перчатки</div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff4de,#ffe2ad)"><span class="pdc-brand">СИЗ</span></div><div class="pdc-bd"><div class="pdc-nm">Перчатки нитриловые</div><div class="pdc-sub">Одноразовые, без пудры</div><div class="pdc-desc">Нитриловые перчатки без пудры, гипоаллергенные. Размеры XS–XL, упаковка по 100 шт. Стойкие к жирам, маслам и химическим веществам. Высокая тактильная чувствительность.</div><div class="pdc-use"><strong>Применение</strong>Пищевое производство, кухня, медицина, уборка, работа с химикатами и моющими средствами.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff4de;color:#e08000">Сертифицировано</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Перчатки нитриловые','Одноразовые, без пудры')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff4de,#ffe2ad)"><span class="pdc-brand">СИЗ</span></div><div class="pdc-bd"><div class="pdc-nm">Перчатки виниловые</div><div class="pdc-sub">Бюджетный вариант для общих работ</div><div class="pdc-desc">Виниловые перчатки без пудры. Размеры S–XL, упаковка по 100 шт. Экономичное решение для задач, не требующих высокой химической стойкости. Мягкие и удобные.</div><div class="pdc-use"><strong>Применение</strong>Общие хозяйственные работы, сервировка, работа с пищевыми продуктами, уборка помещений.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff4de;color:#e08000">Сертифицировано</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Перчатки виниловые','Бюджетный вариант для общих работ')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff4de,#ffe2ad)"><span class="pdc-brand">СИЗ</span></div><div class="pdc-bd"><div class="pdc-nm">Перчатки латексные</div><div class="pdc-sub">С текстурированной поверхностью</div><div class="pdc-desc">Латексные перчатки с текстурированными кончиками пальцев для надёжного захвата. Размеры S–XL, по 100 шт. Высокая эластичность, плотно прилегают к руке.</div><div class="pdc-use"><strong>Применение</strong>Медицинские процедуры, лабораторные работы, пищевые производства, работа с реагентами.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff4de;color:#e08000">Сертифицировано</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Перчатки латексные','С текстурированной поверхностью')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+      <div class="subcat-title"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="#e08000" stroke-width="1.5"/></svg>Маски, халаты и аксессуары</div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff4de,#ffe2ad)"><span class="pdc-brand">СИЗ</span></div><div class="pdc-bd"><div class="pdc-nm">Маски медицинские / респираторы</div><div class="pdc-sub">Защита органов дыхания</div><div class="pdc-desc">Трёхслойные хирургические маски (50 шт). Респираторы FFP1/FFP2 с клапаном и без.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff4de;color:#e08000">Сертифицировано</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Маски / респираторы','Защита органов дыхания')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff4de,#ffe2ad)"><span class="pdc-brand">СИЗ</span></div><div class="pdc-bd"><div class="pdc-nm">Одноразовые халаты и фартуки</div><div class="pdc-sub">Защитная одежда из спанбонда и ПЭ</div><div class="pdc-desc">Халаты из спанбонда (25–40 г/м²) на кнопках. Фартуки из полиэтилена 80×120 см. Размеры M–XXL.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff4de;color:#e08000">Сертифицировано</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Халаты и фартуки','Защитная одежда')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff4de,#ffe2ad)"><span class="pdc-brand">СИЗ</span></div><div class="pdc-bd"><div class="pdc-nm">Шапочки, бахилы, очки</div><div class="pdc-sub">Аксессуары для чистых зон</div><div class="pdc-desc">Шапочки сетчатые и нетканые (100 шт). Бахилы с двойной резинкой (100 пар). Очки поликарбонатные EN 166.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff4de;color:#e08000">Сертифицировано</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Шапочки, бахилы, очки','Аксессуары для чистых зон')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- MARKING: Термоэтикетка чековая лента -->
+    <div class="prod-view" id="prod-marking">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Термоэтикетка чековая лента</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Термоэтикетка <span>чековая лента</span></h3><p>Чековая лента, термоэтикетки, рибоны — расходники для кассовой и складской техники</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff8e1,#ffe082)"><span class="pdc-brand">Расходники</span></div><div class="pdc-bd"><div class="pdc-nm">Чековая лента</div><div class="pdc-sub">Термобумага для ККТ и POS-терминалов</div><div class="pdc-desc">Термобумага для кассовых аппаратов и POS-терминалов. Ширина 57 и 80 мм, длина 20–80 м. Сохраняет отпечаток не менее 5 лет.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff8e1;color:#b5850a">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Чековая лента','Термобумага для ККТ')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff8e1,#ffe082)"><span class="pdc-brand">Расходники</span></div><div class="pdc-bd"><div class="pdc-nm">Термоэтикетки</div><div class="pdc-sub">Самоклеящиеся этикетки для маркировки</div><div class="pdc-desc">Термоэтикетки на самоклеящейся основе. Размеры: 58×40, 75×50, 100×150 мм. Бумага или полипропилен. 1000 шт в рулоне.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff8e1;color:#b5850a">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Термоэтикетки','Самоклеящиеся для маркировки')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp" style="background:linear-gradient(135deg,#fff8e1,#ffe082)"><span class="pdc-brand">Расходники</span></div><div class="pdc-bd"><div class="pdc-nm">Рибоны (красящие ленты)</div><div class="pdc-sub">Для термотрансферной печати</div><div class="pdc-desc">TTR-рибоны: wax, wax-resin, resin. Ширина 35–220 мм, длина 74–450 м. Совместимы с Zebra, Datamax, Citizen.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff8e1;color:#b5850a">Оптовые цены</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Рибоны','Для термотрансферной печати')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+    <!-- GRILL -->
+    <div class="prod-view" id="prod-grill">
+      <div class="cat-indicator"><div class="cat-indicator-dot"></div>Раздел: <strong>Топливо для гриля</strong></div>
+      <button class="back-btn" onclick="backToCats()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Назад к категориям</button>
+      <div class="prod-cat-header"><h3>Топливо для <span>гриля и барбекю</span></h3><p>Уголь и щепа для мангала, барбекю, коптилки — оптовые поставки для HoReCa</p></div>
+      <div class="pg-det">
+        <div class="pdc"><div class="pdc-tp gr"><span class="pdc-brand">Гриль</span></div><div class="pdc-bd"><div class="pdc-nm">Уголь для мангала</div><div class="pdc-sub">Древесный уголь берёзовый и дубовый</div><div class="pdc-desc">Натуральный уголь из берёзы и дуба. Готов к жарке за 20–25 мин. Высокая теплоотдача. Фасовка: 3, 5 и 10 кг.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff3e0;color:#e65100">Натуральный</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Уголь для мангала','Древесный уголь')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+        <div class="pdc"><div class="pdc-tp gr"><span class="pdc-brand">Гриль</span></div><div class="pdc-bd"><div class="pdc-nm">Щепа для копчения</div><div class="pdc-sub">Яблоня, ольха, вишня, дуб</div><div class="pdc-desc">Щепа для горячего и холодного копчения. Влажность ≤20%, фракция 10–30 мм. Фасовка: 500 г и 1 кг.</div></div><div class="pdc-ft"><span class="pdc-tg" style="background:#fff3e0;color:#e65100">Для копчения</span><div class="pdc-btns"><button class="pdc-cart" onclick="addToCart(this,'Щепа для копчения','Яблоня, ольха, вишня, дуб')" title="В корзину"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg></button></div></div></div>
+      </div>
+    </div>
+
+  </div><!-- /.si -->
+</section><!-- /#products -->
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="si">
+    <div class="sh fu"><div class="se">Кого мы обслуживаем</div><h2 class="st">Наши <span class="ac">клиенты</span></h2><p class="ss">Предприятия пищевой отрасли, общепита и гостиничного бизнеса</p><div class="sd"></div></div>
+    <div class="cl-g">
+      <div class="cl fu d1"><div class="cl-ic"><svg viewBox="0 0 38 38" fill="none"><rect x="4" y="14" width="30" height="20" rx="3" stroke="#1558c0" stroke-width="2"/><path d="M4 20h30" stroke="#1558c0" stroke-width="1.5" stroke-linecap="round"/><rect x="10" y="4" width="18" height="10" rx="2" stroke="#1558c0" stroke-width="2"/></svg></div><div class="cl-nm">Пищевая промышленность</div><div class="cl-ds">Заводы, комбинаты, производственные предприятия</div></div>
+      <div class="cl fu d2"><div class="cl-ic"><svg viewBox="0 0 38 38" fill="none"><path d="M6 32V16l13-8 13 8v16" stroke="#1558c0" stroke-width="2" stroke-linejoin="round"/><rect x="13" y="22" width="12" height="10" rx="2" stroke="#1558c0" stroke-width="1.8"/></svg></div><div class="cl-nm">Рестораны и кафе</div><div class="cl-ds">Ресторанный бизнес любого масштаба</div></div>
+      <div class="cl fu d3"><div class="cl-ic"><svg viewBox="0 0 38 38" fill="none"><path d="M5 34V12L19 4l14 8v22" stroke="#1558c0" stroke-width="2" stroke-linejoin="round"/><rect x="8" y="20" width="7" height="7" rx="1" stroke="#1558c0" stroke-width="1.6"/><rect x="23" y="20" width="7" height="7" rx="1" stroke="#1558c0" stroke-width="1.6"/></svg></div><div class="cl-nm">Гостиницы и отели</div><div class="cl-ds">Номерной фонд, рестораны при отеле, прачечные</div></div>
+      <div class="cl fu d4"><div class="cl-ic"><svg viewBox="0 0 38 38" fill="none"><rect x="5" y="10" width="28" height="22" rx="3" stroke="#1558c0" stroke-width="2"/><path d="M5 18h28" stroke="#1558c0" stroke-width="1.5"/></svg></div><div class="cl-nm">Комбинаты питания</div><div class="cl-ds">Столовые, кейтеринг, комбинаты питания</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section id="order">
+  <div class="or-in">
+    <div class="or-hd fu"><h2>Оставить заявку</h2><p>Наш менеджер свяжется с вами и подберёт оптимальное предложение</p></div>
+    <div class="or-card fu d2" id="oc">
+      <form onsubmit="sm(event)" id="orderForm">
+        <div class="or-cart-block" id="orCartBlock">
+          <h4><svg width="15" height="15" viewBox="0 0 18 18" fill="none"><path d="M1 1h2.5L5 11h9l2-7H4" stroke="#2575f5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="14.5" r="1.4" fill="#2575f5"/><circle cx="13" cy="14.5" r="1.4" fill="#2575f5"/></svg>Выбранные товары</h4>
+          <div id="orCartItems"><div class="or-cart-empty">Корзина пуста — добавьте товары из каталога выше</div></div>
+        </div>
+        <div class="fg">
+          <div class="fi"><label>Ваше имя *</label><input type="text" id="fName" placeholder="Иван Иванов" required></div>
+          <div class="fi"><label>Организация</label><input type="text" id="fCompany" placeholder="ООО «Название»"></div>
+          <div class="fi"><label>Телефон *</label><input type="tel" id="fPhone" placeholder="+7 (___) ___-__-__" required></div>
+          <div class="fi"><label>Email</label><input type="email" id="fEmail" placeholder="mail@company.ru"></div>
+          <div class="fi full"><label>Тип предприятия</label><select id="fService"><option value="">— Выберите —</option><option>Пищевая промышленность</option><option>Ресторан / кафе</option><option>Гостиница / отель</option><option>Комбинат питания</option><option>Другое</option></select></div>
+          <div class="fi full"><label>Комментарий</label><textarea id="fMessage" placeholder="Объёмы, частота поставок, вопросы..."></textarea></div>
+        </div>
+        <button type="submit" class="btn-sub">Отправить заявку <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M3 8.5h11M10 5l4 3.5-4 3.5" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <p class="fn">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+      </form>
+    </div>
+    <div class="sb" id="sb"><div class="sb-iw"><svg width="34" height="34" viewBox="0 0 34 34" fill="none"><path d="M7 17l7 7 13-13" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Заявка отправлена!</h3><p>Наш менеджер свяжется с вами в течение рабочего дня.</p></div>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section id="contacts">
+  <div class="si">
+    <div class="sh fu"><div class="se">Как с нами связаться</div><h2 class="st">Контактная <span class="ac">информация</span></h2><div class="sd"></div></div>
+    <div class="ct-g">
+      <div class="fl">
+        <div class="ct-c"><div class="ct-ci"><svg viewBox="0 0 22 22" fill="none"><path d="M11 2C7.7 2 5 4.7 5 8c0 4.8 6 12 6 12s6-7.2 6-12c0-3.3-2.7-6-6-6z" stroke="#1558c0" stroke-width="1.8"/><circle cx="11" cy="8" r="2.5" stroke="#1558c0" stroke-width="1.6"/></svg></div><div class="ct-i"><h4>Адрес</h4><p>196084, г. Санкт-Петербург,<br>ул. Рыбинская, д. 3, литера А, помещ. 4-Н</p></div></div>
+        <div class="ct-c"><div class="ct-ci"><svg viewBox="0 0 22 22" fill="none"><path d="M4 5h4l2 4.5-2.5 1.5a11 11 0 005.5 5.5L14.5 14l4.5 2v4a1 1 0 01-1 1A16 16 0 013 4a1 1 0 011-1z" stroke="#1558c0" stroke-width="1.7" stroke-linejoin="round"/></svg></div><div class="ct-i"><h4>Телефон</h4><a href="tel:+79939651200">8 (993) 965-12-00</a></div></div>
+        <div class="ct-c"><div class="ct-ci"><svg viewBox="0 0 22 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="#1558c0" stroke-width="1.7"/><path d="M2 8l9 6 9-6" stroke="#1558c0" stroke-width="1.7" stroke-linecap="round"/></svg></div><div class="ct-i"><h4>Email</h4><a href="mailto:info@dcprof.ru">info@dcprof.ru</a></div></div>
+        <div class="ct-c"><div class="ct-ci"><svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8.5" stroke="#1558c0" stroke-width="1.7"/><path d="M11 6v5l3 3" stroke="#1558c0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ct-i"><h4>Режим работы</h4><p>Пн–Пт: 9:00 — 18:00</p><p>Сб–Вс: выходной</p></div></div>
+      </div>
+      <div class="fr">
+        <div class="mp"><svg viewBox="0 0 48 48" fill="none"><path d="M24 4C16.3 4 10 10.3 10 18c0 11 14 26 14 26s14-15 14-26c0-7.7-6.3-14-14-14z" stroke="#1558c0" stroke-width="2.5"/><circle cx="24" cy="18" r="5" stroke="#1558c0" stroke-width="2.2"/></svg><p>г. Санкт-Петербург, ул. Рыбинская, д. 3</p></div>
+        <div class="rq"><strong>ООО ДС ПРОФ — Реквизиты</strong>ИНН / КПП: 7810961862 / 781001001<br>196084, г. Санкт-Петербург,<br>ул. Рыбинская, д. 3, литера А, помещ. 4-Н<br>Телефон: <a href="tel:+79939651200" style="color:var(--bb);text-decoration:none">8 (993) 965-12-00</a><br>Email: <a href="mailto:info@dcprof.ru" style="color:var(--bb);text-decoration:none">info@dcprof.ru</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-in">
+    <div>
+      <a class="logo" href="#" style="text-decoration:none">
+        <div class="logo-mark" style="width:40px;height:40px"><svg viewBox="0 0 46 46" fill="none" width="40" height="40"><defs><linearGradient id="lgf" x1="0" y1="0" x2="46" y2="46" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2575f5"/><stop offset="100%" stop-color="#0094c6"/></linearGradient></defs><rect width="46" height="46" rx="11" fill="url(#lgf)"/><path d="M16.5 7.5h13M19.5 7.5v9.5L13 27a4 4 0 003.2 6.5h13.6A4 4 0 0033 27l-6.5-10V7.5" stroke="white" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="29" r="1.5" fill="rgba(255,255,255,.65)"/><circle cx="25" cy="32" r="1.1" fill="rgba(255,255,255,.5)"/></svg></div>
+        <div class="logo-info"><span class="logo-name" style="font-size:17px">ДС ПРОФ</span><span class="logo-tag">Проф. снабжение</span></div>
+      </a>
+      <p class="ft-ds">Комплексное снабжение предприятий пищевой промышленности, ресторанов и гостиниц. Официальный дистрибьютор DOLPHIN.</p>
+    </div>
+    <div class="ft-col"><h5>Продукция</h5><ul><li><a href="#">Профессиональная химия</a></li><li><a href="#">Клининг</a></li><li><a href="#">Прачечная</a></li><li><a href="#">Кухня</a></li><li><a href="#">Упаковка</a></li><li><a href="#">СИЗ</a></li></ul></div>
+    <div class="ft-col"><h5>Компания</h5><ul><li><a href="#about">О нас</a></li><li><a href="#dolphin">DOLPHIN</a></li><li><a href="#clients">Клиенты</a></li><li><a href="#contacts">Контакты</a></li></ul></div>
+    <div class="ft-col"><h5>Контакты</h5><ul><li><a href="tel:+79939651200">8 (993) 965-12-00</a></li><li><a href="mailto:info@dcprof.ru">info@dcprof.ru</a></li><li><a href="#">Пн–Пт: 9:00–18:00</a></li><li><a href="#">Санкт-Петербург</a></li></ul></div>
+  </div>
+  <div class="ft-bt"><p>© 2024 ООО ДС ПРОФ · ИНН 7810961862</p><p>Официальный дистрибьютор DOLPHIN</p></div>
+</footer>
+
+<!-- MODAL -->
+<div class="mb" id="mbg" onclick="cmb(event)">
+  <div class="mx"><h3>Заказать товар</h3><p class="ms">Категория: <span class="mp2" id="mpn"></span></p><input type="text" placeholder="Ваше имя *"><input type="tel" placeholder="Телефон *"><input type="email" placeholder="Email"><textarea placeholder="Объём, частота поставки, вопросы..." rows="3"></textarea><div class="ma"><button class="mc" onclick="document.getElementById('mbg').classList.remove('open')">Отмена</button><button class="mo" onclick="cm()">Отправить заявку</button></div></div>
+</div>
+
+<script>
+// ── PARTICLES ──
+(function(){var c=document.getElementById('ptcls');if(!c)return;for(var i=0;i<16;i++){var p=document.createElement('div');p.className='pt';var s=Math.random()*3.5+2,tx=(Math.random()-.5)*130;p.style.cssText='width:'+s+'px;height:'+s+'px;left:'+Math.random()*100+'%;bottom:'+Math.random()*35+'%;--tx:'+tx+'px;animation-delay:'+Math.random()*7+'s;animation-duration:'+(Math.random()*4+5)+'s';c.appendChild(p);}})();
+
+// ── SCROLL ANIMATIONS ──
+var ob=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('v');});},{threshold:0.05,rootMargin:'0px 0px -10px 0px'});
+document.querySelectorAll('.fu,.fl,.fr,.fs').forEach(function(el){ob.observe(el);});
+setTimeout(function(){document.querySelectorAll('.fu,.fl,.fr,.fs').forEach(function(e){e.classList.add('v');});},400);
+
+// ── HEADER ──
+window.addEventListener('scroll',function(){document.getElementById('hdr').classList.toggle('sc',scrollY>55);});
+
+// ── NAV ──
+function toOrder(){document.getElementById('order').scrollIntoView({behavior:'smooth'});}
+function toggleMenu(){var b=document.getElementById('burger'),n=document.getElementById('mobNav');b.classList.toggle('open');n.classList.toggle('open');}
+function closeMobNav(){document.getElementById('burger').classList.remove('open');document.getElementById('mobNav').classList.remove('open');}
+
+// ── GAS URL ──
+var GAS_URL='https://script.google.com/macros/s/AKfycbxuCgCnAL3JN3ICbSmc85rDBIRakAzd5MHc_g_U1DDaJfUo2ue2L_qi41uudHWgN90/exec';
+
+// ── CART ──
+var cart=[];
+function addToCart(btn,name,sub){var idx=cart.findIndex(function(i){return i.name===name;});if(idx!==-1){cart[idx].qty=(cart[idx].qty||1)+1;showQtyWidget(btn,name,sub,cart[idx].qty);updateCartUI();return;}cart.push({name:name,sub:sub,qty:1});showQtyWidget(btn,name,sub,1);updateCartUI();}
+function showQtyWidget(btn,name,sub,qty){var parent=btn.parentNode;var safeId=name.replace(/[^a-zA-ZЀ-ӿ0-9]/g,'_');var w=document.createElement('div');w.className='pdc-qty';w.id='qty-'+safeId;var n2=name.replace(/'/g,"\\'"),s2=sub.replace(/'/g,"\\'");w.innerHTML='<button class="pdc-qb" onclick="cardQty(this,\''+n2+'\',\''+s2+'\',-1)">&#8722;</button><span class="pdc-qv">'+qty+'</span><button class="pdc-qb" onclick="cardQty(this,\''+n2+'\',\''+s2+'\',1)">+</button>';parent.replaceChild(w,btn);}
+function cardQty(btn,name,sub,delta){var idx=cart.findIndex(function(i){return i.name===name;});if(idx===-1)return;cart[idx].qty=(cart[idx].qty||1)+delta;var safeId=name.replace(/[^a-zA-ZЀ-ӿ0-9]/g,'_');var w=document.getElementById('qty-'+safeId);if(cart[idx].qty<1){cart.splice(idx,1);if(w){var newBtn=document.createElement('button');newBtn.className='pdc-cart';var n2=name.replace(/'/g,"\\'"),s2=sub.replace(/'/g,"\\'");newBtn.setAttribute('onclick',"addToCart(this,'"+n2+"','"+s2+"')");newBtn.title='В корзину';newBtn.innerHTML='<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg>';w.parentNode.replaceChild(newBtn,w);}}else{if(w)w.querySelector('.pdc-qv').textContent=cart[idx].qty;}updateCartUI();}
+function removeFromCart(idx){cart.splice(idx,1);updateCartUI();}
+function changeQty(idx,delta){if(!cart[idx])return;cart[idx].qty=(cart[idx].qty||1)+delta;if(cart[idx].qty<1){cart.splice(idx,1);}updateCartUI();}
+function clearCart(){cart=[];document.querySelectorAll('.pdc-qty').forEach(function(w){var btn=document.createElement('button');btn.className='pdc-cart';var qb=w.querySelector('.pdc-qb');if(qb){var m=qb.getAttribute('onclick').match(/cardQty\(this,'([^']+)','([^']+)',/);if(m){var n2=m[1].replace(/'/g,"\\'"),s2=m[2].replace(/'/g,"\\'");btn.setAttribute('onclick',"addToCart(this,'"+n2+"','"+s2+"')");}}btn.title='В корзину';btn.innerHTML='<svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 1h2l1.5 7.5h7L13 4H4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="12.5" r="1.2" fill="white"/><circle cx="11.5" cy="12.5" r="1.2" fill="white"/></svg>';w.parentNode.replaceChild(btn,w);});updateCartUI();}
+function updateCartUI(){var n=cart.reduce(function(s,i){return s+(i.qty||1);},0);var fab=document.getElementById('cartFab');var badge=document.getElementById('cartBadge');var hd=document.getElementById('cartHdCnt');if(!fab)return;badge.textContent=n;hd.textContent='Товаров: '+n;fab.style.display=n>0?'flex':'none';var container=document.getElementById('cartItems');if(n===0){container.innerHTML='<div class="cart-empty"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M4 4h6l4 22h22l4-16H10" stroke="#8aa3c2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="38" r="3" stroke="#8aa3c2" stroke-width="2"/><circle cx="34" cy="38" r="3" stroke="#8aa3c2" stroke-width="2"/></svg>Корзина пуста.<br>Добавьте товары из каталога.</div>';}else{container.innerHTML=cart.map(function(item,i){var q=item.qty||1;return '<div class="ci"><div class="ci-dot"></div><div class="ci-info"><div class="ci-nm">'+item.name+'</div><div class="ci-sub">'+item.sub+'</div></div><div class="ci-qty"><button class="ci-qb" onclick="changeQty('+i+',-1)">&#8722;</button><span class="ci-qv">'+q+'</span><button class="ci-qb" onclick="changeQty('+i+',1)">+</button></div><button class="ci-rm" onclick="removeFromCart('+i+')" title="Удалить">&times;</button></div>';}).join('');}var orItems=document.getElementById('orCartItems');if(orItems){if(n===0){orItems.innerHTML='<div class="or-cart-empty">Корзина пуста — добавьте товары из каталога выше</div>';}else{orItems.innerHTML=cart.map(function(item,i){var q=item.qty||1;return '<div class="or-cart-item"><span class="or-cart-item-name">'+item.name+'</span><div class="or-cart-qty"><button class="or-qty-btn" onclick="changeQty('+i+',-1)">&#8722;</button><span class="or-qty-val">'+q+'</span><button class="or-qty-btn" onclick="changeQty('+i+',1)">+</button></div></div>';}).join('');}}}
+function openCart(){document.getElementById('cartPanel').classList.add('open');document.getElementById('cartOverlay').classList.add('show');document.body.style.overflow='hidden';}
+function closeCart(){document.getElementById('cartPanel').classList.remove('open');document.getElementById('cartOverlay').classList.remove('show');document.body.style.overflow='';}
+function goToOrder(){closeCart();document.getElementById('order').scrollIntoView({behavior:'smooth'});}
+
+// ── TAB FILTER ──
+var catToTab={cleaning:'chem',laundry:'chem',kitchen:'chem',hygiene:'chem',pack:'pack',hoz:'hoz',inv:'inv',posuda:'posuda',upack:'upack',siz:'siz',marking:'mark',grill:'grill'};
+function fc(cat,btn){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');var insideProd=document.querySelector('.prod-view.active')!==null;if(insideProd){document.querySelector('.cat-view').classList.remove('hidden');document.querySelectorAll('.prod-view').forEach(function(v){v.classList.remove('active');});if(cat==='all'){document.querySelectorAll('.pc').forEach(function(c){c.style.display='';});}else{document.querySelectorAll('.pc').forEach(function(card){if(card.getAttribute('data-c')===cat){card.style.display='';}else{card.style.display='none';}});}document.getElementById('products').scrollIntoView({behavior:'smooth'});}else{document.querySelectorAll('.pc').forEach(function(card){if(cat==='all'||card.getAttribute('data-c')===cat){card.style.display='';}else{card.style.display='none';}});}}
+function showCat(cat){document.querySelector('.cat-view').classList.add('hidden');document.querySelectorAll('.prod-view').forEach(function(v){v.classList.remove('active');});var el=document.getElementById('prod-'+cat);if(el){el.classList.add('active');el.querySelectorAll('.fu,.fl,.fr,.fs').forEach(function(e){e.classList.add('v');});setTimeout(function(){el.querySelectorAll('.fu,.fl,.fr,.fs').forEach(function(e){e.classList.add('v');});},50);}var tabKey=catToTab[cat]||'all';document.querySelectorAll('.tab-btn').forEach(function(b){var onc=b.getAttribute('onclick')||'';var match=onc.match(/fc\('([^']+)'/);if(match){b.classList.toggle('active',match[1]===tabKey);}});document.getElementById('products').scrollIntoView({behavior:'smooth'});}
+function backToCats(){document.querySelector('.cat-view').classList.remove('hidden');document.querySelectorAll('.prod-view').forEach(function(v){v.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===0);});document.querySelectorAll('.pc').forEach(function(c){c.style.display='';});document.getElementById('products').scrollIntoView({behavior:'smooth'});}
+
+// ── MODAL ──
+function om(p){document.getElementById('mpn').textContent=p;document.getElementById('mbg').classList.add('open');}
+function cmb(e){if(e.target===document.getElementById('mbg'))document.getElementById('mbg').classList.remove('open');}
+function cm(){document.getElementById('mbg').classList.remove('open');alert('Заявка принята!');}
+
+// ── FORM SUBMIT ──
+function sm(e){e.preventDefault();var cartList=cart.map(function(i){return i.name+(i.qty>1?' \xd7'+i.qty:'');}).join(', ')||'не выбраны';var payload={formType:'Заявка с сайта DSPROF',name:document.getElementById('fName').value,company:document.getElementById('fCompany').value,phone:document.getElementById('fPhone').value,email:document.getElementById('fEmail').value,service:document.getElementById('fService').value,message:document.getElementById('fMessage').value,product:cartList,options:cart.map(function(i){return i.name+(i.qty>1?' \xd7'+i.qty:'');})};document.getElementById('oc').style.display='none';var sb=document.getElementById('sb');sb.style.display='block';sb.classList.add('show');clearCart();if(GAS_URL){fetch(GAS_URL,{method:'POST',body:JSON.stringify(payload)}).catch(function(){});}}
+// SEARCH
+var allProducts = [];
+function buildSearchIndex() {
+  document.querySelectorAll('.pdc').forEach(function(card) {
+    var name = card.querySelector('.pdc-nm') ? card.querySelector('.pdc-nm').textContent.trim() : '';
+    var sub  = card.querySelector('.pdc-sub') ? card.querySelector('.pdc-sub').textContent.trim() : '';
+    var desc = card.querySelector('.pdc-desc') ? card.querySelector('.pdc-desc').textContent.trim() : '';
+    var catId = card.closest('.prod-view') ? card.closest('.prod-view').id : '';
+    allProducts.push({ name, sub, desc, catId, el: card });
+  });
+}
+window.addEventListener('DOMContentLoaded', buildSearchIndex);
+
+function searchProducts(q) {
+  var clear = document.getElementById('searchClear');
+  var box   = document.getElementById('searchResults');
+  q = q.trim().toLowerCase();
+  clear.style.display = q ? 'block' : 'none';
+  if (!q) { box.style.display = 'none'; return; }
+  var found = allProducts.filter(function(p) {
+    return (p.name + p.sub + p.desc).toLowerCase().includes(q);
+  });
+  box.style.display = 'block';
+  if (!found.length) {
+    box.innerHTML = '<div class="sr-empty">Ничего не найдено</div>';
+    return;
+  }
+  box.innerHTML = found.slice(0, 12).map(function(p) {
+    var view = document.getElementById(p.catId);
+    var cards = view ? Array.from(view.querySelectorAll('.pdc')) : [];
+    var idx = cards.indexOf(p.el);
+    return '<div class="sr-item" onclick="goToProduct(\'' + p.catId + '\',' + idx + ')">' +
+      '<div><div class="sr-name">' + p.name + '</div>' +
+      '<div class="sr-sub">' + p.sub + '</div></div>' +
+      '</div>';
+  }).join('');
+}
+
+function goToProduct(catId, cardIndex) {
+  // Сначала переходим на нужную вкладку/категорию
+  var cat = catId.replace('prod-', '');
+  showCat(cat);
+
+  // Закрываем поиск
+  document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('prodSearch').value = '';
+  document.getElementById('searchClear').style.display = 'none';
+
+  // Скроллим к товару с небольшой задержкой (чтобы категория успела открыться)
+  setTimeout(function() {
+    var view = document.getElementById(catId);
+    if (!view) return;
+    var cards = view.querySelectorAll('.pdc');
+    var target = cards[cardIndex];
+    if (!target) return;
+
+    // Подсвечиваем карточку
+    target.style.transition = 'box-shadow .3s, transform .3s';
+    target.style.boxShadow = '0 0 0 3px #2575f5, 0 18px 40px rgba(21,88,192,.25)';
+    target.style.transform = 'translateY(-4px)';
+
+    // Скроллим к ней
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Убираем подсветку через 2 секунды
+    setTimeout(function() {
+      target.style.boxShadow = '';
+      target.style.transform = '';
+    }, 2000);
+  }, 120);
+}
+
+
+function clearSearch() {
+  document.getElementById('prodSearch').value = '';
+  document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('searchClear').style.display = 'none';
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.prod-search-wrap')) {
+    document.getElementById('searchResults').style.display = 'none';
+  }
+});
+</script>
+
+<!-- CART FAB -->
+<button class="cart-fab" id="cartFab" onclick="openCart()"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M1 1h2.5L5 11h9l2-7H4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="14.5" r="1.4" fill="white"/><circle cx="13" cy="14.5" r="1.4" fill="white"/></svg>Корзина<span class="cart-badge" id="cartBadge">0</span></button>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+<!-- CART PANEL -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-hd"><div><h3>Корзина заявки</h3><div class="cart-hd-cnt" id="cartHdCnt">Товаров: 0</div></div><button class="cart-close" onclick="closeCart()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+  <div class="cart-items" id="cartItems"><div class="cart-empty"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M4 4h6l4 22h22l4-16H10" stroke="#8aa3c2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="38" r="3" stroke="#8aa3c2" stroke-width="2"/><circle cx="34" cy="38" r="3" stroke="#8aa3c2" stroke-width="2"/></svg>Корзина пуста.<br>Добавьте товары из каталога.</div></div>
+  <div class="cart-footer"><button class="cart-checkout" onclick="goToOrder()">Оформить заявку <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="cart-clear" onclick="clearCart()">Очистить корзину</button></div>
+</div>
+<!-- ════════════════════════════════════════════════════ -->
+<!-- PRODUCT SVG ICONS — Paste this block before </body> -->
+<!-- ════════════════════════════════════════════════════ -->
+<style>
+.pdc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.55);backdrop-filter:blur(4px);box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0;transition:transform .3s,box-shadow .3s}
+.pdc:hover .pdc-icon{transform:scale(1.12) rotate(-3deg);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+@keyframes iconPop{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.15) rotate(3deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+.pdc-icon.animated{animation:iconPop .45s cubic-bezier(.34,1.56,.64,1) both}
+</style>
+<script>
+(function(){
+var I={
+"BASIC":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20h16" stroke-width="1.8" stroke-linecap="round"/><rect x="8" y="4" width="3" height="16" rx="1.5" stroke-width="1.6"/><path d="M11 8h5a2 2 0 012 2v2a2 2 0 01-2 2h-5" stroke-width="1.6"/><circle cx="18" cy="6" r="1.5" fill="currentColor" stroke="none" opacity=".4"/><circle cx="20" cy="9" r="1" fill="currentColor" stroke="none" opacity=".3"/></svg>',
+"BASIC PLUS":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 20h18" stroke-width="1.8" stroke-linecap="round"/><rect x="8" y="3" width="3" height="17" rx="1.5" stroke-width="1.6"/><path d="M11 7h5a2 2 0 012 2v2a2 2 0 01-2 2h-5" stroke-width="1.6"/><path d="M16 4l2 2M19 3l2 2M17 7l1.5 1.5" stroke-width="1.3" stroke-linecap="round" opacity=".5"/></svg>',
+"FORTE":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 20h18" stroke-width="1.8" stroke-linecap="round"/><rect x="9" y="2" width="3" height="18" rx="1.5" stroke-width="1.7"/><path d="M12 6h5a2 2 0 012 2v3a2 2 0 01-2 2h-5" stroke-width="1.7"/><path d="M15 2l1.5 1.5M18 2l1.5 1.5M16.5 5l1.5 1.5" stroke-width="1.6" stroke-linecap="round"/></svg>',
+"SANI MAX":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 18c0 1.1.9 2 2 2h4a2 2 0 002-2v-3H6v3z" stroke-width="1.6"/><path d="M8 15V9a2 2 0 012-2h0a2 2 0 012 2v6" stroke-width="1.6"/><path d="M14 12h3a2 2 0 012 2v0a2 2 0 01-2 2h-3" stroke-width="1.5"/><circle cx="18" cy="6" r="1.5" fill="currentColor" stroke="none" opacity=".35"/><circle cx="20" cy="9" r="1" fill="currentColor" stroke="none" opacity=".25"/></svg>',
+"SANI ACID":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 3h6M11 3v5l-5 8a3 3 0 002.5 4.5h7A3 3 0 0018 16l-5-8V3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="17" r="1.2" fill="currentColor" stroke="none" opacity=".4"/><circle cx="13.5" cy="15.5" r=".9" fill="currentColor" stroke="none" opacity=".3"/></svg>',
+"PHIN":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="7" y="6" width="10" height="15" rx="3" stroke-width="1.6"/><path d="M10 6V4a2 2 0 014 0v2" stroke-width="1.5"/><path d="M12 3v-1" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="15" r="1.5" stroke-width="1.3" opacity=".5"/><path d="M12 16.5v2" stroke-width="1.3" stroke-linecap="round" opacity=".5"/></svg>',
+"SEPTO-MAX":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3C8 3 5 5.5 5 9c0 2 1 3.5 2.5 4.5L9 21h6l1.5-7.5C18 12.5 19 11 19 9c0-3.5-3-6-7-6z" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 9.5l1.5 1.5 3-3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21h6" stroke-width="1.6" stroke-linecap="round"/></svg>',
+"REGULAR":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="16" rx="2" stroke-width="1.6"/><circle cx="12" cy="14" r="4" stroke-width="1.5"/><circle cx="12" cy="14" r="1.5" fill="currentColor" stroke="none" opacity=".3"/><path d="M8 5V3M12 5V3M16 5V3" stroke-width="1.5" stroke-linecap="round"/><path d="M3 9h18" stroke-width="1.3" opacity=".4"/></svg>',
+"PRIME PLUS":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="17" rx="8" ry="3" stroke-width="1.6"/><path d="M4 17v-4c0-1.7 3.6-3 8-3s8 1.3 8 3v4" stroke-width="1.6"/><circle cx="9" cy="14" r="1" fill="currentColor" stroke="none" opacity=".3"/><path d="M9 6l1 3M15 6l-1 3M12 5v3" stroke-width="1.3" stroke-linecap="round" opacity=".5"/></svg>',
+"DEZO PROM":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="7" y="8" width="10" height="13" rx="1.5" stroke-width="1.6"/><path d="M10 8V5a2 2 0 014 0v3" stroke-width="1.5"/><path d="M5 6l2 2M4 10l2.5.5M5.5 3l1.5 2" stroke-width="1.4" stroke-linecap="round" opacity=".5"/><path d="M10 13h4M12 11v4" stroke-width="1.4" stroke-linecap="round" opacity=".5"/></svg>',
+"ProLaun Core":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="1.6"/><circle cx="12" cy="14" r="5" stroke-width="1.5"/><path d="M9.5 13c.8-1.5 2.7-1.5 5 0" stroke-width="1.3" stroke-linecap="round" opacity=".5"/><circle cx="7" cy="7" r="1.2" stroke-width="1.2"/><circle cx="11" cy="7" r="1.2" stroke-width="1.2"/></svg>',
+"ProLaun Core Plus":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="3" stroke-width="1.6"/><circle cx="12" cy="14" r="5" stroke-width="1.5"/><path d="M9.5 13c.8-1.5 2.7-1.5 5 0" stroke-width="1.3" stroke-linecap="round" opacity=".5"/><circle cx="7" cy="7" r="1.2" stroke-width="1.2"/><circle cx="11" cy="7" r="1.2" stroke-width="1.2"/><path d="M16 5l1.5 1.5M18.5 3.5l1 1" stroke-width="1.3" stroke-linecap="round" opacity=".45"/></svg>',
+"Пищевые контейнеры":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="8" width="18" height="12" rx="2" stroke-width="1.6"/><path d="M3 12h18" stroke-width="1.3" opacity=".4"/><path d="M6 8V6a1 1 0 011-1h10a1 1 0 011 1v2" stroke-width="1.5"/><path d="M8 15h8" stroke-width="1.3" stroke-linecap="round" opacity=".35"/></svg>',
+"Лотки упаковочные":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 10l3-5h12l3 5" stroke-width="1.6" stroke-linejoin="round"/><rect x="3" y="10" width="18" height="10" rx="1.5" stroke-width="1.6"/><path d="M7 14h10" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg>',
+"Плёнка пищевая":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="4" width="16" height="16" rx="8" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke-width="1.5"/><path d="M12 4v5M12 15v5" stroke-width="1.2" opacity=".3"/><path d="M4 12h5M15 12h5" stroke-width="1.2" opacity=".3"/></svg>',
+"Фольга алюминиевая":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="7" width="18" height="10" rx="5" stroke-width="1.6"/><circle cx="12" cy="12" r="2.5" stroke-width="1.4"/><path d="M2 12h4M18 12h4" stroke-width="1.4" stroke-linecap="round" opacity=".4"/></svg>',
+"Бумага для выпечки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 3h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2z" stroke-width="1.6"/><path d="M8 8h8M8 12h6M8 16h4" stroke-width="1.2" stroke-linecap="round" opacity=".4"/></svg>',
+"Салфетки бумажные":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 7h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V9a2 2 0 012-2z" stroke-width="1.6"/><path d="M3 12h18" stroke-width="1.2" opacity=".3"/><path d="M8 7V5l4-1 4 1v2" stroke-width="1.4" stroke-linejoin="round" opacity=".5"/></svg>',
+"Полотенца бумажные":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="5" width="14" height="14" rx="7" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke-width="1.4"/><path d="M19 12h3" stroke-width="1.5" stroke-linecap="round"/><path d="M22 10v7a2 2 0 01-2 2h-1" stroke-width="1.4" stroke-linecap="round" opacity=".5"/></svg>',
+"Мусорные мешки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 8h14l-1.5 12a2 2 0 01-2 2H8.5a2 2 0 01-2-2L5 8z" stroke-width="1.6"/><path d="M3 8h18" stroke-width="1.7" stroke-linecap="round"/><path d="M9 5h6" stroke-width="1.5" stroke-linecap="round"/><path d="M10 12v5M14 12v5" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg>',
+"Губки хозяйственные":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="8" width="18" height="10" rx="3" stroke-width="1.6"/><path d="M3 13h18" stroke-width="1.4" opacity=".4"/><circle cx="7" cy="10.5" r=".8" fill="currentColor" stroke="none" opacity=".3"/><circle cx="10" cy="10.5" r=".8" fill="currentColor" stroke="none" opacity=".3"/><circle cx="13" cy="10.5" r=".8" fill="currentColor" stroke="none" opacity=".3"/><circle cx="16" cy="10.5" r=".8" fill="currentColor" stroke="none" opacity=".3"/></svg>',
+"Тряпки и салфетки для уборки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16v4c0 2-2 3-4 3H8c-2 0-4-1-4-3V6z" stroke-width="1.6"/><path d="M6 13v6a2 2 0 002 2h8a2 2 0 002-2v-6" stroke-width="1.5" opacity=".5"/><path d="M8 9h8" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg>',
+"Скребки и щётки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="9" y="2" width="6" height="10" rx="1" stroke-width="1.6"/><path d="M9 12h6v3H9z" stroke-width="1.5"/><path d="M10 15v5M12 15v6M14 15v5" stroke-width="1.4" stroke-linecap="round"/></svg>',
+"Стаканы пластиковые":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 3h10l-1.5 18H8.5L7 3z" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 3h10" stroke-width="1.8" stroke-linecap="round"/><path d="M8.5 9h7" stroke-width="1.2" stroke-linecap="round" opacity=".3"/></svg>',
+"Бумажные стаканы для кофе":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h10l-1 16H7L6 4z" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 4h10" stroke-width="1.8" stroke-linecap="round"/><path d="M16 8h2a2 2 0 010 4h-1.5" stroke-width="1.5" stroke-linecap="round"/><path d="M9 1v2M11 0v2M13 1v2" stroke-width="1.2" stroke-linecap="round" opacity=".4"/></svg>',
+"Тарелки одноразовые":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="14" rx="9" ry="5" stroke-width="1.6"/><ellipse cx="12" cy="13" rx="6" ry="3" stroke-width="1.2" opacity=".35"/><path d="M3 14c0-5 4-9 9-9s9 4 9 9" stroke-width="1.5" opacity=".4"/></svg>',
+"Столовые приборы":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 2v8c0 1.5 1 3 2.5 3V21" stroke-width="1.6" stroke-linecap="round"/><path d="M7 6h5" stroke-width="1.3" stroke-linecap="round" opacity=".4"/><path d="M17 2v6a3 3 0 01-3 3h0v10" stroke-width="1.6" stroke-linecap="round"/><path d="M17 2c1.5 0 3 2 3 5s-1.5 3-3 3" stroke-width="1.5"/></svg>',
+"Крышки и трубочки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="11" cy="8" rx="7" ry="2.5" stroke-width="1.6"/><path d="M4 8v2c0 1.4 3.1 2.5 7 2.5S18 11.4 18 10V8" stroke-width="1.5"/><path d="M19 4l1 16" stroke-width="1.6" stroke-linecap="round"/><circle cx="19" cy="3.5" r="1" fill="currentColor" stroke="none" opacity=".4"/></svg>',
+"Стрейч-плёнка ручная":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="5" width="14" height="14" rx="7" stroke-width="1.6"/><circle cx="12" cy="12" r="3" stroke-width="1.4"/><path d="M19 12h3v4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/></svg>',
+"Стрейч-плёнка машинная":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="14" width="12" height="8" rx="1" stroke-width="1.6"/><path d="M3 18h12" stroke-width="1.2" opacity=".3"/><rect x="15" y="6" width="7" height="16" rx="3.5" stroke-width="1.6"/><circle cx="18.5" cy="14" r="1.5" stroke-width="1.2" opacity=".4"/></svg>',
+"Скотч упаковочный":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke-width="1.5"/><path d="M18 6l3-3" stroke-width="1.5" stroke-linecap="round"/></svg>',
+"Пакеты и мешки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 7h12v13a2 2 0 01-2 2H8a2 2 0 01-2-2V7z" stroke-width="1.6"/><path d="M6 7l2-4h8l2 4" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 11h6M9 15h4" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg>',
+"Перчатки нитриловые":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 21V11l-2-3V5a1 1 0 012 0v5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 10V4a1 1 0 012 0v6M14 10V3a1 1 0 012 0v7M18 10V5a1 1 0 00-2 0" stroke-width="1.4" stroke-linecap="round"/><path d="M8 21h10v-7c0-2-1-4-3-4h-5" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+"Перчатки виниловые":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 21V11l-2-3V5a1 1 0 012 0v5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 10V4a1 1 0 012 0v6M14 10V3a1 1 0 012 0v7M18 10V5a1 1 0 00-2 0" stroke-width="1.4" stroke-linecap="round"/><path d="M8 21h10v-7c0-2-1-4-3-4h-5" stroke-width="1.5" stroke-linejoin="round"/><circle cx="5" cy="3" r="1.5" fill="currentColor" stroke="none" opacity=".25"/></svg>',
+"Перчатки латексные":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 21V11l-2-3V5a1 1 0 012 0v5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 10V4a1 1 0 012 0v6M14 10V3a1 1 0 012 0v7M18 10V5a1 1 0 00-2 0" stroke-width="1.4" stroke-linecap="round"/><path d="M8 21h10v-7c0-2-1-4-3-4h-5" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 15h4M10 18h3" stroke-width="1.1" stroke-linecap="round" opacity=".3"/></svg>',
+"Маски медицинские / респираторы":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 10c0-2 3-5 8-5s8 3 8 5v3c0 3-3 6-8 6s-8-3-8-6v-3z" stroke-width="1.6"/><path d="M2 10h2M20 10h2" stroke-width="1.5" stroke-linecap="round"/><path d="M8 12h8M9 15h6" stroke-width="1.2" stroke-linecap="round" opacity=".35"/></svg>',
+"Одноразовые халаты и фартуки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 3h8l2 4v14H6V7l2-4z" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 3L4 7h2M16 3l4 4h-2" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 3v5" stroke-width="1.3" stroke-linecap="round" opacity=".4"/></svg>',
+"Шапочки, бахилы, очки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="12" r="3.5" stroke-width="1.5"/><circle cx="15" cy="12" r="3.5" stroke-width="1.5"/><path d="M12.5 12h-1" stroke-width="1.6"/><path d="M5.5 12H3M21 12h-2.5" stroke-width="1.5" stroke-linecap="round"/></svg>',
+"Чековая лента":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7 3h10a2 2 0 012 2v14l-3-2-3 2-3-2-3 2V5a2 2 0 012-2z" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 8h6M10 11h4M10 14h5" stroke-width="1.2" stroke-linecap="round" opacity=".4"/></svg>',
+"Термоэтикетки":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="5" width="16" height="10" rx="2" stroke-width="1.6"/><path d="M8 8h4M8 11h6" stroke-width="1.2" stroke-linecap="round" opacity=".4"/><rect x="14" y="7" width="3" height="6" rx=".5" stroke-width="1.2" opacity=".5"/><path d="M4 15l3 4h10l3-4" stroke-width="1.4" stroke-linejoin="round" opacity=".5"/></svg>',
+"Рибоны (красящие ленты)":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="8" cy="10" r="5" stroke-width="1.6"/><circle cx="8" cy="10" r="2" stroke-width="1.3" opacity=".4"/><circle cx="17" cy="14" r="4" stroke-width="1.6"/><circle cx="17" cy="14" r="1.5" stroke-width="1.2" opacity=".4"/><path d="M12 8h3" stroke-width="1.4" stroke-linecap="round" opacity=".5"/></svg>',
+"Уголь для мангала":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 18h14a2 2 0 002-2v-2H3v2a2 2 0 002 2z" stroke-width="1.6"/><path d="M3 14l2-4h14l2 4" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 10V7c0-1 .5-2 1-2M12 10V6c0-1 .5-2 1-2M16 10V7c0-1 .5-2 1-2" stroke-width="1.3" stroke-linecap="round" opacity=".5"/></svg>',
+"Щепа для копчения":'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 21c-2 0-3-1.5-3-3s2-3 2-5-1-3 0-5 2-2 3-2" stroke-width="1.5" stroke-linecap="round" opacity=".45"/><path d="M13 21c-2 0-3-1.5-3-3s2-3 2-5-1-3 0-5 2-2 3-2" stroke-width="1.6" stroke-linecap="round"/><path d="M18 21c-2 0-3-1.5-3-3s2-3 2-5-1-3 0-5 2-2 3-2" stroke-width="1.5" stroke-linecap="round" opacity=".45"/><path d="M4 21h16" stroke-width="1.7" stroke-linecap="round"/></svg>'
+};
+var C={
+"BASIC":"#1558c0","BASIC PLUS":"#1558c0","FORTE":"#1558c0",
+"SANI MAX":"#c05030","SANI ACID":"#c05030",
+"PHIN":"#0094c6","SEPTO-MAX":"#c03030",
+"REGULAR":"#00a86b","PRIME PLUS":"#00a86b","DEZO PROM":"#c03030",
+"ProLaun Core":"#7c4dff","ProLaun Core Plus":"#7c4dff",
+"Пищевые контейнеры":"#2ea043","Лотки упаковочные":"#2ea043","Плёнка пищевая":"#2ea043",
+"Фольга алюминиевая":"#7b1fa2","Бумага для выпечки":"#7b1fa2","Салфетки бумажные":"#7b1fa2","Полотенца бумажные":"#7b1fa2",
+"Мусорные мешки":"#2e7d32","Губки хозяйственные":"#2e7d32","Тряпки и салфетки для уборки":"#2e7d32","Скребки и щётки":"#2e7d32",
+"Стаканы пластиковые":"#c2185b","Бумажные стаканы для кофе":"#c2185b","Тарелки одноразовые":"#c2185b","Столовые приборы":"#c2185b","Крышки и трубочки":"#c2185b",
+"Стрейч-плёнка ручная":"#1565c0","Стрейч-плёнка машинная":"#1565c0","Скотч упаковочный":"#1565c0","Пакеты и мешки":"#1565c0",
+"Перчатки нитриловые":"#e08000","Перчатки виниловые":"#e08000","Перчатки латексные":"#e08000","Маски медицинские / респираторы":"#e08000","Одноразовые халаты и фартуки":"#e08000","Шапочки, бахилы, очки":"#e08000",
+"Чековая лента":"#b5850a","Термоэтикетки":"#b5850a","Рибоны (красящие ленты)":"#b5850a",
+"Уголь для мангала":"#e65100","Щепа для копчения":"#e65100"
+};
+document.querySelectorAll('.pdc').forEach(function(card,idx){
+var n=card.querySelector('.pdc-nm');if(!n)return;
+var nm=n.textContent.trim(),svg=I[nm];if(!svg)return;
+var c=C[nm]||'#1558c0',tp=card.querySelector('.pdc-tp');if(!tp)return;
+var d=document.createElement('div');d.className='pdc-icon';d.style.color=c;d.innerHTML=svg;
+var a=tp.querySelector('.pdc-art');if(a)tp.insertBefore(d,a);else tp.appendChild(d);
+setTimeout(function(){d.classList.add('animated')},idx*60);
+});
+})();
+</script>
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- EDITABLE QTY — Вставить ПЕРЕД закрывающим </body>       -->
+<!-- Заменяет стандартные +/- на виджет с ручным вводом      -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<style>
+/* ── Editable Quantity Styles ── */
+.pdc-qv {
+  min-width: 32px; height: 32px;
+  background: linear-gradient(135deg,#1c66d4,#007fb0);
+  color: #fff; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative;
+  user-select: none; transition: background .2s;
+}
+.pdc-qv:hover { background: linear-gradient(135deg,#2575f5,#00a0d8); }
+.pdc-qty { overflow: visible !important; position: relative; }
+.pdc-qv::after {
+  content: '✎'; position: absolute; top: -8px; right: -8px;
+  font-size: 8px; opacity: 0; transition: opacity .2s; pointer-events: none;
+  background: #fff; color: #1558c0; border-radius: 50%; width: 15px; height: 15px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 5px rgba(0,0,0,.18); z-index: 5;
+  line-height: 1;
+}
+.pdc-qty:hover .pdc-qv::after { opacity: 1; }
+
+.pdc-qi {
+  width: 48px; height: 32px;
+  background: #fff; border: 2px solid #2575f5;
+  border-radius: 0; color: #1558c0;
+  font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+  text-align: center; outline: none;
+  -moz-appearance: textfield;
+}
+.pdc-qi::-webkit-outer-spin-button,
+.pdc-qi::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pdc-qi:focus { box-shadow: 0 0 0 3px rgba(37,117,245,.25); }
+
+/* Cart panel editable qty */
+.ci-qv {
+  min-width: 24px; text-align: center; font-weight: 700;
+  font-size: 13px; color: var(--td); cursor: pointer;
+  padding: 2px 4px; border-radius: 4px; transition: background .15s;
+}
+.ci-qv:hover { background: rgba(37,117,245,.1); }
+.ci-qi {
+  width: 44px; height: 24px; border: 2px solid #2575f5;
+  border-radius: 5px; text-align: center; font-weight: 700;
+  font-size: 13px; color: #1558c0; font-family: 'Inter', sans-serif;
+  outline: none; -moz-appearance: textfield;
+}
+.ci-qi::-webkit-outer-spin-button,
+.ci-qi::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+/* Order form editable qty */
+.or-qty-val {
+  min-width: 26px; text-align: center; font-weight: 700;
+  font-size: 13px; color: #4A6080; cursor: pointer;
+  padding: 1px 4px; border-radius: 4px; transition: background .15s;
+}
+.or-qty-val:hover { background: rgba(37,117,245,.1); }
+.or-qty-input {
+  width: 44px; height: 24px; border: 2px solid #2575f5;
+  border-radius: 6px; text-align: center; font-weight: 700;
+  font-size: 13px; color: #1558c0; font-family: 'Inter', sans-serif;
+  outline: none; background: rgba(37,117,245,.05);
+  -moz-appearance: textfield;
+}
+.or-qty-input::-webkit-outer-spin-button,
+.or-qty-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+/* Tooltip hint */
+.qty-hint {
+  position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%); white-space: nowrap;
+  background: var(--bd, #050d1a); color: #fff;
+  font-size: 11px; font-weight: 500; padding: 5px 10px;
+  border-radius: 6px; pointer-events: none;
+  opacity: 0; transition: opacity .2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
+  z-index: 10;
+}
+.qty-hint::after {
+  content: ''; position: absolute; top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--bd, #050d1a);
+}
+.pdc-qty:hover .qty-hint { opacity: 1; }
+</style>
+
+<script>
+(function(){
+  // ── Override: showQtyWidget ──
+  // Now includes editable qty value
+  window.showQtyWidget = function(btn, name, sub, qty) {
+    var parent = btn.parentNode;
+    var safeId = name.replace(/[^a-zA-ZЀ-ӿ0-9]/g, '_');
+    var w = document.createElement('div');
+    w.className = 'pdc-qty';
+    w.id = 'qty-' + safeId;
+    w.style.position = 'relative';
+
+    var n2 = name.replace(/'/g, "\\'");
+    var s2 = sub.replace(/'/g, "\\'");
+
+    w.innerHTML =
+      '<div class="qty-hint">Нажмите на число для ввода</div>' +
+      '<button class="pdc-qb" onclick="cardQty(this,\'' + n2 + '\',\'' + s2 + '\',-1)">&#8722;</button>' +
+      '<span class="pdc-qv" onclick="editQtyCard(this,\'' + n2 + '\',\'' + s2 + '\')" title="Нажмите для ручного ввода">' + qty + '</span>' +
+      '<button class="pdc-qb" onclick="cardQty(this,\'' + n2 + '\',\'' + s2 + '\',1)">+</button>';
+
+    parent.replaceChild(w, btn);
+  };
+
+  // ── Edit qty directly on product card ──
+  window.editQtyCard = function(span, name, sub) {
+    var idx = cart.findIndex(function(i) { return i.name === name; });
+    if (idx === -1) return;
+    var current = cart[idx].qty || 1;
+
+    var input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'pdc-qi';
+    input.value = current;
+    input.min = 1;
+    input.max = 99999;
+
+    span.parentNode.replaceChild(input, span);
+    input.focus();
+    input.select();
+
+    function commit() {
+      var val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 1) val = 1;
+      if (val > 99999) val = 99999;
+      cart[idx].qty = val;
+
+      var newSpan = document.createElement('span');
+      newSpan.className = 'pdc-qv';
+      var n2 = name.replace(/'/g, "\\'");
+      var s2 = sub.replace(/'/g, "\\'");
+      newSpan.setAttribute('onclick', "editQtyCard(this,'" + n2 + "','" + s2 + "')");
+      newSpan.setAttribute('title', 'Нажмите для ручного ввода');
+      newSpan.textContent = val;
+      input.parentNode.replaceChild(newSpan, input);
+      updateCartUI();
+    }
+
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      if (e.key === 'Escape') {
+        input.value = current;
+        input.blur();
+      }
+    });
+  };
+
+  // ── Override: updateCartUI ──
+  // Make qty editable in cart panel and order form
+  var origUpdateCartUI = window.updateCartUI;
+
+  window.updateCartUI = function() {
+    var n = cart.reduce(function(s, i) { return s + (i.qty || 1); }, 0);
+    var fab = document.getElementById('cartFab');
+    var badge = document.getElementById('cartBadge');
+    var hd = document.getElementById('cartHdCnt');
+    if (!fab) return;
+    badge.textContent = n;
+    hd.textContent = 'Товаров: ' + n;
+    fab.style.display = n > 0 ? 'flex' : 'none';
+
+    // ── Cart panel items ──
+    var container = document.getElementById('cartItems');
+    if (n === 0) {
+      container.innerHTML = '<div class="cart-empty"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M4 4h6l4 22h22l4-16H10" stroke="#8aa3c2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="38" r="3" stroke="#8aa3c2" stroke-width="2"/><circle cx="34" cy="38" r="3" stroke="#8aa3c2" stroke-width="2"/></svg>Корзина пуста.<br>Добавьте товары из каталога.</div>';
+    } else {
+      container.innerHTML = cart.map(function(item, i) {
+        var q = item.qty || 1;
+        return '<div class="ci">' +
+          '<div class="ci-dot"></div>' +
+          '<div class="ci-info"><div class="ci-nm">' + item.name + '</div><div class="ci-sub">' + item.sub + '</div></div>' +
+          '<div class="ci-qty">' +
+            '<button class="ci-qb" onclick="changeQty(' + i + ',-1)">&#8722;</button>' +
+            '<span class="ci-qv" onclick="editQtyPanel(' + i + ',this)" title="Нажмите для ввода">' + q + '</span>' +
+            '<button class="ci-qb" onclick="changeQty(' + i + ',1)">+</button>' +
+          '</div>' +
+          '<button class="ci-rm" onclick="removeFromCart(' + i + ')" title="Удалить">&times;</button>' +
+        '</div>';
+      }).join('');
+    }
+
+    // ── Order form items ──
+    var orItems = document.getElementById('orCartItems');
+    if (orItems) {
+      if (n === 0) {
+        orItems.innerHTML = '<div class="or-cart-empty">Корзина пуста — добавьте товары из каталога выше</div>';
+      } else {
+        orItems.innerHTML = cart.map(function(item, i) {
+          var q = item.qty || 1;
+          return '<div class="or-cart-item">' +
+            '<span class="or-cart-item-name">' + item.name + '</span>' +
+            '<div class="or-cart-qty">' +
+              '<button class="or-qty-btn" onclick="changeQty(' + i + ',-1)">&#8722;</button>' +
+              '<span class="or-qty-val" onclick="editQtyOrder(' + i + ',this)" title="Нажмите для ввода">' + q + '</span>' +
+              '<button class="or-qty-btn" onclick="changeQty(' + i + ',1)">+</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      }
+    }
+
+    // ── Sync card qty displays ──
+    cart.forEach(function(item) {
+      var safeId = item.name.replace(/[^a-zA-ZЀ-ӿ0-9]/g, '_');
+      var w = document.getElementById('qty-' + safeId);
+      if (w) {
+        var qv = w.querySelector('.pdc-qv');
+        if (qv) qv.textContent = item.qty || 1;
+      }
+    });
+  };
+
+  // ── Edit qty in cart panel ──
+  window.editQtyPanel = function(idx, span) {
+    if (!cart[idx]) return;
+    var current = cart[idx].qty || 1;
+
+    var input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'ci-qi';
+    input.value = current;
+    input.min = 1;
+    input.max = 99999;
+
+    span.parentNode.replaceChild(input, span);
+    input.focus();
+    input.select();
+
+    function commit() {
+      var val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 1) val = 1;
+      if (val > 99999) val = 99999;
+      cart[idx].qty = val;
+      updateCartUI();
+    }
+
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      if (e.key === 'Escape') { input.value = current; input.blur(); }
+    });
+  };
+
+  // ── Edit qty in order form ──
+  window.editQtyOrder = function(idx, span) {
+    if (!cart[idx]) return;
+    var current = cart[idx].qty || 1;
+
+    var input = document.createElement('input');
+    input.type = 'number';
+    input.className = 'or-qty-input';
+    input.value = current;
+    input.min = 1;
+    input.max = 99999;
+
+    span.parentNode.replaceChild(input, span);
+    input.focus();
+    input.select();
+
+    function commit() {
+      var val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 1) val = 1;
+      if (val > 99999) val = 99999;
+      cart[idx].qty = val;
+      updateCartUI();
+    }
+
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      if (e.key === 'Escape') { input.value = current; input.blur(); }
+    });
+  };
+
+})();
+</script>
+</body>
+</html>
